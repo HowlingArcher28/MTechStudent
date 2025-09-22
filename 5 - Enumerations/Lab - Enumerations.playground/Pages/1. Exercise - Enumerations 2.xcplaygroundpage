@@ -1,0 +1,28 @@
+struct Card {
+    enum Value {
+        case ace
+        case two
+        case three
+        case four
+        case five
+        case six
+        case seven
+        case eight
+        case nine
+        case ten
+        case jack
+        case queen
+        case king
+    }
+    
+    var suit: Suit
+    var value: Value
+}
+
+// Initializing two Card objects
+let card1 = Card(suit: .hearts, value: .queen)
+let card2 = Card(suit: .spades, value: .ace)
+
+// Printing details about each card
+print("Card 1: \(card1.value) of \(card1.suit)")
+print("Card 2: \(card2.value) of \(card2.suit)")
