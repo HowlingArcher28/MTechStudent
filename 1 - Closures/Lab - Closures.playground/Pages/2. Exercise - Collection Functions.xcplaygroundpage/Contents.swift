@@ -16,9 +16,9 @@ print(sortedCollection1)
 
 
 //:  Using your initial collection of unsorted friends and family names, call the collection's `sorted(by:)` function, but pass in your own closure instead of the `forwards` function. The closure should sort the collection in the same way as `forwards`. Be sure to include parameter names, parameter types, and the `return` statement within your closure. Store the result in `sortedCollection2`, then print the result.
-let sortedCollection2 = names.sorted(by: { (name1: String, name2: String) -> Bool in
+let sortedCollection2 = names.sorted { (name1: String, name2: String) -> Bool in
     return name1 < name2
-})
+}
 print(sortedCollection2)
 
 
