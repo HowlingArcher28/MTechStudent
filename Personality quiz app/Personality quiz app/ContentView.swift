@@ -47,8 +47,10 @@ struct ContentView: View {
                         .animation(.easeInOut(duration: 5).repeatForever(autoreverses: true), value: animate)
                 }
 
-                //MARK: - Content card
+                //MARK: - Content container
                 VStack {
+                    Spacer(minLength: 0)
+
                     ZStack {
                         RoundedRectangle(cornerRadius: 28, style: .continuous)
                             .fill(.ultraThinMaterial)
@@ -58,10 +60,11 @@ struct ContentView: View {
                             )
                             .shadow(color: Color.black.opacity(0.2), radius: 18, x: 0, y: 10)
                             .overlay(highlightOverlay)
-                            .frame(maxWidth: 420)
+                            .frame(maxWidth: 460)
                             .padding(.horizontal)
 
-                        VStack(spacing: 28) {
+                        // Center-align everything inside the card
+                        VStack(alignment: .center, spacing: 22) {
                             //MARK: - Title
                             Text("What Color Are You?")
                                 .font(.system(.largeTitle, design: .rounded).bold())
@@ -116,21 +119,62 @@ struct ContentView: View {
                             }
                             .buttonStyle(ScaleOnPressStyle())
 
+                            //MARK: - How it works (centered)
+                            VStack(alignment: .center, spacing: 12) {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "sparkles")
+                                        .foregroundStyle(.purple)
+                                    Text("How it works")
+                                        .font(.system(.subheadline, design: .rounded).weight(.semibold))
+                                        .foregroundStyle(.secondary)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .center)
+
+                                VStack(spacing: 10) {
+                                    howItWorksRow(icon: "checkmark.circle.fill", color: .blue, text: "Answer 5 quick questions")
+                                    howItWorksRow(icon: "slider.horizontal.3", color: .purple, text: "Mix of choices and sliders")
+                                    howItWorksRow(icon: "paintpalette.fill", color: .pink, text: "Get your color match instantly")
+                                }
+                                .frame(maxWidth: .infinity, alignment: .center)
+                            }
+                            .padding(.horizontal, 28)
+                            .padding(.top, 2)
+
+                            //MARK: - Possible matches (centered)
+                            VStack(alignment: .center, spacing: 10) {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "circle.grid.2x2.fill")
+                                        .foregroundStyle(.blue)
+                                    Text("Possible matches")
+                                        .font(.system(.subheadline, design: .rounded).weight(.semibold))
+                                        .foregroundStyle(.secondary)
+                                }
+                                .frame(maxWidth: .infinity, alignment: .center)
+
+                                HStack(spacing: 14) {
+                                    colorSwatch(.red, name: "Red")
+                                    colorSwatch(.yellow, name: "Yellow")
+                                    colorSwatch(.blue, name: "Blue")
+                                    colorSwatch(.purple, name: "Purple")
+                                }
+                                .frame(maxWidth: .infinity, alignment: .center)
+                            }
+                            .padding(.horizontal, 28)
+
                             //MARK: - Small footer hint
                             Text("Takes less than a minute!")
                                 .font(.system(.footnote, design: .rounded))
                                 .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
                                 .padding(.bottom, 8)
-
-                            Spacer(minLength: 0)
                         }
-                        .frame(maxWidth: 420, maxHeight: 560, alignment: .top)
-                        .padding(.vertical, 36)
+                        .frame(maxWidth: 460, maxHeight: 560, alignment: .top)
+                        .padding(.vertical, 22)
                     }
-                    .padding(.top, 24)
 
-                    Spacer()
+                    Spacer(minLength: 0)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             }
             .navigationDestination(isPresented: $showQuiz) {
                 QuizView()
@@ -157,6 +201,45 @@ struct ContentView: View {
             )
             .blendMode(.overlay)
             .allowsHitTesting(false)
+    }
+
+    //MARK: - Helpers
+    private func howItWorksRow(icon: String, color: Color, text: String) -> some View {
+        HStack(spacing: 10) {
+            Image(systemName: icon)
+                .foregroundStyle(color)
+            Text(text)
+                .font(.system(.callout, design: .rounded))
+                .foregroundStyle(.primary.opacity(0.9))
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(color.opacity(0.10))
+        )
+    }
+
+    private func colorSwatch(_ color: Color, name: String) -> some View {
+        VStack(spacing: 6) {
+            Circle()
+                .fill(color)
+                .frame(width: 34, height: 34)
+                .shadow(color: color.opacity(0.35), radius: 6, x: 0, y: 3)
+            Text(name)
+                .font(.system(.caption2, design: .rounded).weight(.medium))
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal, 6)
+        .padding(.vertical, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(Color.white.opacity(0.20), lineWidth: 1)
+                )
+        )
     }
 }
 
