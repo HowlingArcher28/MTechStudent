@@ -8,21 +8,26 @@
 import SwiftUI
 import Combine
 
-
-
 // MARK: - ViewModel
 
 @MainActor
 final class QuizViewModel: ObservableObject {
 
+    // Value-to-color mapping used throughout:
+    // 1 = Red (energetic, direct, warm)
+    // 2 = Yellow (social, optimistic, playful)
+    // 3 = Blue (calm, organized, thoughtful)
+    // 4 = Purple (creative, imaginative, mysterious)
+
     @Published private(set) var questions: [QuizQuestion] = [
+    
         QuizQuestion(
             prompt: "Pick a weekend activity:",
             choices: [
-                Choice(text: "Hiking", value: 1),
-                Choice(text: "Reading", value: 2),
-                Choice(text: "Concert", value: 3),
-                Choice(text: "Cooking", value: 4)
+                Choice(text: "Hiking", value: 1),   // Red
+                Choice(text: "Reading", value: 3),  // Blue
+                Choice(text: "Concert", value: 2),  // Yellow
+                Choice(text: "Cooking", value: 4)   // Purple
             ],
             kind: .multipleChoice,
             selectionMode: .single
@@ -30,10 +35,10 @@ final class QuizViewModel: ObservableObject {
         QuizQuestion(
             prompt: "Choose your favorite time(s) of day (pick all that apply):",
             choices: [
-                Choice(text: "Sunrise", value: 1),
-                Choice(text: "Noon", value: 2),
-                Choice(text: "Sunset", value: 3),
-                Choice(text: "Midnight", value: 4)
+                Choice(text: "Sunrise", value: 1),  // Red
+                Choice(text: "Noon", value: 2),     // Yellow
+                Choice(text: "Sunset", value: 3),   // Blue
+                Choice(text: "Midnight", value: 4)  // Purple
             ],
             kind: .multipleChoice,
             selectionMode: .multiple
@@ -41,10 +46,10 @@ final class QuizViewModel: ObservableObject {
         QuizQuestion(
             prompt: "What fits you best?",
             choices: [
-                Choice(text: "Calm", value: 1),
-                Choice(text: "Bold", value: 2),
-                Choice(text: "Playful", value: 3),
-                Choice(text: "Mysterious", value: 4)
+                Choice(text: "Calm", value: 3),        // Blue
+                Choice(text: "Bold", value: 1),        // Red
+                Choice(text: "Playful", value: 2),     // Yellow
+                Choice(text: "Mysterious", value: 4)   // Purple
             ],
             kind: .multipleChoice,
             selectionMode: .single
@@ -58,10 +63,115 @@ final class QuizViewModel: ObservableObject {
         QuizQuestion(
             prompt: "Pick your ideal vacation:",
             choices: [
-                Choice(text: "Beach", value: 1),
-                Choice(text: "Mountains", value: 2),
-                Choice(text: "City", value: 3),
-                Choice(text: "Countryside", value: 4)
+                Choice(text: "Beach", value: 1),        // Red
+                Choice(text: "Mountains", value: 3),    // Blue
+                Choice(text: "City", value: 2),         // Yellow
+                Choice(text: "Countryside", value: 4)   // Purple
+            ],
+            kind: .multipleChoice,
+            selectionMode: .single
+        ),
+        QuizQuestion(
+            prompt: "Pick a soundtrack for your day:",
+            choices: [
+                Choice(text: "Upbeat pop/EDM", value: 2),        // Yellow
+                Choice(text: "Ambient/chill", value: 3),         // Blue
+                Choice(text: "Indie/alternative", value: 4),     // Purple
+                Choice(text: "Rock/anthemic", value: 1)          // Red
+            ],
+            kind: .multipleChoice,
+            selectionMode: .single
+        ),
+        QuizQuestion(
+            prompt: "Which traits describe you? (pick all that apply)",
+            choices: [
+                Choice(text: "Adventurous", value: 1),  // Red
+                Choice(text: "Loyal", value: 3),        // Blue
+                Choice(text: "Creative", value: 4),     // Purple
+                Choice(text: "Social", value: 2)        // Yellow
+            ],
+            kind: .multipleChoice,
+            selectionMode: .multiple
+        ),
+        QuizQuestion(
+            prompt: "Your ideal workspace:",
+            choices: [
+                Choice(text: "Minimal and tidy", value: 3), // Blue
+                Choice(text: "Colorful and inspiring", value: 2), // Yellow
+                Choice(text: "Cozy and warm", value: 1),    // Red
+                Choice(text: "Moody and modern", value: 4)  // Purple
+            ],
+            kind: .multipleChoice,
+            selectionMode: .single
+        ),
+        QuizQuestion(
+            prompt: "How organized are you from 1 to 10?",
+            choices: [],
+            kind: .slider(min: 1, max: 10, step: 1),
+            selectionMode: .single
+        ),
+        QuizQuestion(
+            prompt: "Pick your favorite weather:",
+            choices: [
+                Choice(text: "Sunny with a breeze", value: 2), // Yellow
+                Choice(text: "Light rain", value: 3),          // Blue
+                Choice(text: "Autumn chill", value: 4),        // Purple
+                Choice(text: "Warm summer, clear sky", value: 1) // Red
+            ],
+            kind: .multipleChoice,
+            selectionMode: .single
+        ),
+        QuizQuestion(
+            prompt: "Favorite hobbies (pick all that apply):",
+            choices: [
+                Choice(text: "Sports/outdoors", value: 1),  // Red
+                Choice(text: "Art/music", value: 4),        // Purple
+                Choice(text: "Games/puzzles", value: 3),    // Blue
+                Choice(text: "Social events", value: 2)     // Yellow
+            ],
+            kind: .multipleChoice,
+            selectionMode: .multiple
+        ),
+        QuizQuestion(
+            prompt: "Choose a dessert:",
+            choices: [
+                Choice(text: "Pumpkin pie", value: 2),        // Yellow
+                Choice(text: "Chocolate", value: 4),          // Purple
+                Choice(text: "Vanilla ice cream", value: 3),  // Blue
+                Choice(text: "Cinnamon roll", value: 1)       // Red
+            ],
+            kind: .multipleChoice,
+            selectionMode: .single
+        ),
+        QuizQuestion(
+            prompt: "What do you value most in friends? (pick all that apply)",
+            choices: [
+                Choice(text: "Honesty", value: 1),     // Red
+                Choice(text: "Fun", value: 2),         // Yellow
+                Choice(text: "Reliability", value: 3), // Blue
+                Choice(text: "Trust", value: 4)        // Purple
+            ],
+            kind: .multipleChoice,
+            selectionMode: .multiple
+        ),
+        QuizQuestion(
+            prompt: "Pick an element:",
+            choices: [
+                Choice(text: "Fire", value: 1),   // Red
+                Choice(text: "Earth", value: 2),  // Yellow
+                Choice(text: "Water", value: 3),  // Blue
+                Choice(text: "Air", value: 4)     // Purple
+            ],
+            kind: .multipleChoice,
+            selectionMode: .single
+        ),
+        QuizQuestion(
+            prompt: "Your way to communicate:",
+            choices: [
+                Choice(text: "Direct and brief", value: 1),            // Red
+                Choice(text: "Enthusiastic and lively", value: 2),     // Yellow
+                Choice(text: "Thoughtful and measured", value: 3),     // Blue
+                Choice(text: "Quiet and shy", value: 4)                // Purple
             ],
             kind: .multipleChoice,
             selectionMode: .single
@@ -250,21 +360,17 @@ final class QuizViewModel: ObservableObject {
         selectedChoiceIDs.removeAll()
     }
 
+    // Global slider mapping used by all sliders to keep consistency with color bands.
     private func mapSliderToValue(_ value: Double) -> Int {
         let v = Int(value.rounded())
         switch v {
-        case ...3: return 1
-        case 4...5: return 2
-        case 6...8: return 3
-        default: return 4
+        case ...3: return 1    // Red
+        case 4...5: return 2   // Yellow
+        case 6...8: return 3   // Blue
+        default: return 4      // Purple
         }
     }
 }
-
-
-
- 
-
 
 #Preview {
     NavigationStack {

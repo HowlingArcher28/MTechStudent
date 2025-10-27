@@ -63,7 +63,6 @@ struct ContentView: View {
                             .frame(maxWidth: 460)
                             .padding(.horizontal)
 
-                        // Center-align everything inside the card
                         VStack(alignment: .center, spacing: 22) {
                             //MARK: - Title
                             Text("What Color Are You?")
@@ -81,7 +80,7 @@ struct ContentView: View {
                                 .padding(.horizontal, 24)
 
                             //MARK: - Subtitle
-                            Text("Answer a few quick questions to discover the color that best matches your personality.")
+                            Text("Answer a few quick questions to discover the color that best matches your personality!")
                                 .font(.system(.body, design: .rounded))
                                 .foregroundStyle(.primary.opacity(0.85))
                                 .multilineTextAlignment(.center)
@@ -131,7 +130,7 @@ struct ContentView: View {
                                 .frame(maxWidth: .infinity, alignment: .center)
 
                                 VStack(spacing: 10) {
-                                    howItWorksRow(icon: "checkmark.circle.fill", color: .blue, text: "Answer 5 quick questions")
+                                    howItWorksRow(icon: "checkmark.circle.fill", color: .blue, text: "Answer 15 quick questions")
                                     howItWorksRow(icon: "slider.horizontal.3", color: .purple, text: "Mix of choices and sliders")
                                     howItWorksRow(icon: "paintpalette.fill", color: .pink, text: "Get your color match instantly")
                                 }
