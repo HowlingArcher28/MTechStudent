@@ -1,0 +1,41 @@
+//  🏔️ MTECH Code Challenge TP14: "Wilson Primes"
+//  Concept: Practice translating math concepts into Swift
+
+//  Instructions:
+    //  Wilson primes satisfy the following condition. Let P represent a prime number.
+    //  ((P-1)! + 1) / P^2 = a whole number
+    //  Your task is to create a function that returns true if the given number is a Wilson prime.
+
+//  Examples:
+    //  Input: 5 or 13 or 563
+    //  Output: true
+
+    //  Input: Any other number
+    //  Output: False
+
+//  ⌺ Black Diamond Challenge:
+    //  There are three known Wilson primes. Create a function that outputs all three (by calculating them, not by hardcoding them as a literal).
+
+import Foundation
+
+func isPrime(_ n: Int) -> Bool {
+    
+    if n < 2 { return false }
+    
+    if n == 2 { return true }
+    
+    if n % 2 == 0 { return false }
+    
+    var i = 3
+    
+    while i * i <= n {
+        if n % i == 0 { return false }
+        i += 2
+    }
+    return true
+    
+}
+
+var primeCheckAnswer = "The number you entered is a prime number: \(isPrime(27))"
+
+print(primeCheckAnswer)
