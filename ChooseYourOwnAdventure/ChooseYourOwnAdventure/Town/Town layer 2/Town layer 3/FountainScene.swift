@@ -7,14 +7,14 @@ struct FountainScene: View {
     var body: some View {
         SceneView(
             title: "Fountain",
-            description: "The water sings under its breath. It remembers everyone.",
+            description: "Water trickles steadily into the basin. Coins line the bottom.",
             systemImage: "drop.circle.fill",
             gradient: [Color.cyan, Color.blue],
             onBack: onBack,
             choices: [
                 SceneChoice(
                     title: "Make a Wish",
-                    subtitle: "It answers in ripples along your spine.",
+                    subtitle: "Ripples spread across the surface.",
                     systemImage: "sparkles",
                     colors: [Color.cyan, Color.blue],
                     foreground: .white,

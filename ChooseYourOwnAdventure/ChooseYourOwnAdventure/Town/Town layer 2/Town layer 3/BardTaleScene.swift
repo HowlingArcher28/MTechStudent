@@ -7,14 +7,14 @@ struct BardTaleScene: View {
     var body: some View {
         SceneView(
             title: "The Bard",
-            description: "He sings your steps as you take them. The last verse ends with your birthday.",
+            description: "He sings a familiar tune that matches your steps. The last verse mentions your birthday.",
             systemImage: "music.mic",
             gradient: [Color.blue, Color.purple],
             onBack: onBack,
             choices: [
                 SceneChoice(
                     title: "Join the Chorus",
-                    subtitle: "The room breathes with you.",
+                    subtitle: "Voices rise around you.",
                     systemImage: "music.quarternote.3",
                     colors: [Color.blue, Color.purple],
                     foreground: .white,

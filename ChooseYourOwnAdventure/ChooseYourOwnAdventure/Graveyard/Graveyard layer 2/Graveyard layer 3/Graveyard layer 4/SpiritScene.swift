@@ -7,14 +7,14 @@ struct SpiritScene: View {
     var body: some View {
         SceneView(
             title: "Kind Spirit",
-            description: "“Go in peace,” it says. “Or go in pieces.” It smiles kindly either way.",
+            description: "A gentle voice says, “Go in peace.” The spirit’s smile is calm and steady.",
             systemImage: "person.crop.circle.badge.checkmark",
             gradient: [Color.blue, Color.cyan],
             onBack: onBack,
             choices: [
                 SceneChoice(
                     title: "Accept the Blessing",
-                    subtitle: "Your bones feel lighter.",
+                    subtitle: "Your shoulders feel lighter.",
                     systemImage: "sun.max.fill",
                     colors: [Color.blue, Color.cyan],
                     foreground: .white,

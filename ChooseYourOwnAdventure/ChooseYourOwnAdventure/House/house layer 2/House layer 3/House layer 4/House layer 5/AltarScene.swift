@@ -7,14 +7,14 @@ struct AltarScene: View {
     var body: some View {
         SceneView(
             title: "Stone Altar",
-            description: "A bowl, a candle, a line you choose to cross.",
+            description: "A stone bowl and a single candle sit on the altar. You can choose to make an oath.",
             systemImage: "flame.fill",
             gradient: [Color.orange, Color.brown],
             onBack: onBack,
             choices: [
                 SceneChoice(
                     title: "Swear a Pact",
-                    subtitle: "Power, and its teeth.",
+                    subtitle: "Power, with a cost.",
                     systemImage: "seal.fill",
                     colors: [Color.orange, Color.brown],
                     foreground: .white,

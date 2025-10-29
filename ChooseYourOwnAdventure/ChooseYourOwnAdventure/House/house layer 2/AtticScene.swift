@@ -7,14 +7,14 @@ struct AtticScene: View {
     var body: some View {
         SceneView(
             title: "The Attic",
-            description: "Cobwebs shiver to a wind that never arrives. A music box clicks without turning.",
+            description: "Dry boards, low rafters, and the clean smell of cedar. A covered trunk sits by the dormer window. Somewhere, a music box clicks once.",
             systemImage: "square.stack.3d.up.fill",
             gradient: [Color.orange, Color.pink],
             onBack: onBack,
             choices: [
                 SceneChoice(
-                    title: "Peer from the Window",
-                    subtitle: "The town looks older, and less alive.",
+                    title: "Look Out the Window",
+                    subtitle: "Town lights blink through a thin fog.",
                     systemImage: "window.vertical.open",
                     colors: [Color.orange, Color.pink],
                     foreground: .black,
@@ -22,7 +22,7 @@ struct AtticScene: View {
                 ),
                 SceneChoice(
                     title: "Read the Leather Journal",
-                    subtitle: "Dates end abruptly on tonight.",
+                    subtitle: "Entries stop on tonight’s date.",
                     systemImage: "book.closed.fill",
                     colors: [Color(red: 0.95, green: 0.6, blue: 0.25), Color.pink],
                     foreground: .white,
@@ -30,7 +30,7 @@ struct AtticScene: View {
                 ),
                 SceneChoice(
                     title: "Feel Behind the Rafters",
-                    subtitle: "A latch where there shouldn’t be one.",
+                    subtitle: "Your fingers catch on a hidden latch.",
                     systemImage: "hand.tap.fill",
                     colors: [Color.orange, Color.pink],
                     foreground: .white,

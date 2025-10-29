@@ -7,7 +7,7 @@ struct CatacombsScene: View {
     var body: some View {
         SceneView(
             title: "Catacombs",
-            description: "Candles gutter. Bones are stacked like books. The air tastes of iron.",
+            description: "Candles flicker. Bones are stacked along the walls. The air smells like iron.",
             systemImage: "circle.grid.cross.fill",
             gradient: [Color.gray, Color.brown],
             onBack: onBack,
@@ -22,7 +22,7 @@ struct CatacombsScene: View {
                 ),
                 SceneChoice(
                     title: "Search the Shelves",
-                    subtitle: "A scroll maps a library that shouldn’t exist.",
+                    subtitle: "A scroll maps a nearby library.",
                     systemImage: "scroll.fill",
                     colors: [Color.gray, Color.orange],
                     foreground: .white,

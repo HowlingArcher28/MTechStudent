@@ -7,14 +7,14 @@ struct ClearingScene: View {
     var body: some View {
         SceneView(
             title: "Moonlit Clearing",
-            description: "Fireflies drift like embers. The wind goes quiet to hear you better.",
+            description: "Fireflies drift in the dark. The wind settles and the clearing is still.",
             systemImage: "moon.stars.fill",
             gradient: [Color.indigo, Color.cyan],
             onBack: onBack,
             choices: [
                 SceneChoice(
                     title: "Circle of Stones",
-                    subtitle: "Older than the trees. Hungrier, too.",
+                    subtitle: "Older than the trees, worn smooth by time.",
                     systemImage: "hexagon.fill",
                     colors: [Color.indigo, Color.cyan],
                     foreground: .white,
@@ -22,7 +22,7 @@ struct ClearingScene: View {
                 ),
                 SceneChoice(
                     title: "Chase a Will-o’-the-Wisp",
-                    subtitle: "It leads where you would not go alone.",
+                    subtitle: "It drifts toward the deeper woods.",
                     systemImage: "flame.fill",
                     colors: [Color.purple, Color.cyan],
                     foreground: .white,

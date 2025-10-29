@@ -7,14 +7,14 @@ struct AtticJournalScene: View {
     var body: some View {
         SceneView(
             title: "Leather Journal",
-            description: "“On All Hallows Eve, the house remembers its own.” The last page smells like smoke.",
+            description: "The first line reads, “On All Hallows’ Eve, the house remembers its own.” The last page smells faintly of smoke.",
             systemImage: "text.book.closed.fill",
             gradient: [Color.orange, Color.brown],
             onBack: onBack,
             choices: [
                 SceneChoice(
                     title: "Search for the Missing Page",
-                    subtitle: "Faint soot prints lead to a beam.",
+                    subtitle: "Soot smudges trail toward a ceiling beam.",
                     systemImage: "magnifyingglass",
                     colors: [Color.orange, Color.brown],
                     foreground: .white,
@@ -22,7 +22,7 @@ struct AtticJournalScene: View {
                 ),
                 SceneChoice(
                     title: "Close the Journal",
-                    subtitle: "The click echoes too long.",
+                    subtitle: "The latch clicks and the sound lingers.",
                     systemImage: "xmark.circle.fill",
                     colors: [Color.orange, Color.pink],
                     foreground: .black,

@@ -7,14 +7,14 @@ struct HiddenPageScene: View {
     var body: some View {
         SceneView(
             title: "The Missing Page",
-            description: "“Call the house by its true name.” The ink looks wet.",
+            description: "The note reads, “Call the house by its true name.” The ink looks fresh and dark.",
             systemImage: "doc.text.fill",
             gradient: [Color.orange, Color.pink],
             onBack: onBack,
             choices: [
                 SceneChoice(
                     title: "Read Aloud",
-                    subtitle: "The rafters groan like ribs.",
+                    subtitle: "The rafters creak overhead.",
                     systemImage: "text.badge.star",
                     colors: [Color.orange, Color.pink],
                     foreground: .white,
@@ -22,7 +22,7 @@ struct HiddenPageScene: View {
                 ),
                 SceneChoice(
                     title: "Slip the Page into Your Pocket",
-                    subtitle: "It warms your thigh.",
+                    subtitle: "It warms in your pocket.",
                     systemImage: "folder.fill.badge.plus",
                     colors: [Color.orange, Color.pink],
                     foreground: .white,

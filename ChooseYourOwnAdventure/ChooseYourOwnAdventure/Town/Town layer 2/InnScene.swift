@@ -7,14 +7,14 @@ struct InnScene: View {
     var body: some View {
         SceneView(
             title: "The Inn",
-            description: "Mugs clink. Stories grow teeth. The hearth swallows sparks whole.",
+            description: "Mugs clink, conversations grow lively, and the hearth pops with sparks.",
             systemImage: "bed.double.fill",
             gradient: [Color.blue, Color.cyan],
             onBack: onBack,
             choices: [
                 SceneChoice(
                     title: "Rent a Room",
-                    subtitle: "Sheets cold as a river stone.",
+                    subtitle: "The sheets are cool and clean.",
                     systemImage: "key.horizontal.fill",
                     colors: [Color.blue, Color.cyan],
                     foreground: .white,
@@ -22,7 +22,7 @@ struct InnScene: View {
                 ),
                 SceneChoice(
                     title: "Hear the Bard’s Tale",
-                    subtitle: "The chorus knows your name.",
+                    subtitle: "People hum along to the melody.",
                     systemImage: "music.note.list",
                     colors: [Color.indigo, Color.cyan],
                     foreground: .white,

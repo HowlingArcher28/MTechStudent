@@ -7,7 +7,7 @@ struct AudienceScene: View {
     var body: some View {
         SceneView(
             title: "The Audience",
-            description: "Cheers, claps, smiles. The sound is a tide that won’t let you go.",
+            description: "The crowd claps and cheers. The sound swells and fills the room.",
             systemImage: "person.3.sequence.fill",
             gradient: [Color.purple, Color.cyan],
             onBack: onBack,

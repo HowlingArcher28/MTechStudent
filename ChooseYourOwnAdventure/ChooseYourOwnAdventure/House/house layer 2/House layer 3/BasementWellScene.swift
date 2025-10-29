@@ -7,14 +7,14 @@ struct BasementWellScene: View {
     var body: some View {
         SceneView(
             title: "Old Well",
-            description: "Still water. Your reflection smiles with someone else’s teeth.",
+            description: "Still water reflects your face. The surface ripples and distorts your smile.",
             systemImage: "aqi.medium",
             gradient: [Color.blue, Color.indigo],
             onBack: onBack,
             choices: [
                 SceneChoice(
                     title: "Climb Down",
-                    subtitle: "Stones slick as tongues.",
+                    subtitle: "The stones are slick with moss.",
                     systemImage: "arrow.down.circle.fill",
                     colors: [Color.blue, Color.indigo],
                     foreground: .white,
@@ -22,7 +22,7 @@ struct BasementWellScene: View {
                 ),
                 SceneChoice(
                     title: "Walk Away",
-                    subtitle: "The whisper follows, patient.",
+                    subtitle: "A faint whisper follows you up the stairs.",
                     systemImage: "arrowshape.turn.up.backward.circle.fill",
                     colors: [Color.gray, Color.indigo],
                     foreground: .white,

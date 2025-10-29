@@ -7,14 +7,14 @@ struct SquareScene: View {
     var body: some View {
         SceneView(
             title: "Town Square",
-            description: "Pumpkins grin with too many teeth. Children chase shadows that chase back.",
+            description: "Carved pumpkins glow. Children run across the square, laughing.",
             systemImage: "music.note",
             gradient: [Color.cyan, Color.blue],
             onBack: onBack,
             choices: [
                 SceneChoice(
                     title: "Fountain",
-                    subtitle: "Coins like cold stars under the skin of the water.",
+                    subtitle: "Coins shine beneath the water.",
                     systemImage: "drop.circle.fill",
                     colors: [Color.cyan, Color.blue],
                     foreground: .white,
@@ -22,7 +22,7 @@ struct SquareScene: View {
                 ),
                 SceneChoice(
                     title: "Visit the Vendor",
-                    subtitle: "Charms that hum when you touch them.",
+                    subtitle: "Charms hum softly when you touch them.",
                     systemImage: "bag.fill",
                     colors: [Color.teal, Color.blue],
                     foreground: .white,
@@ -30,7 +30,7 @@ struct SquareScene: View {
                 ),
                 SceneChoice(
                     title: "Follow the Lantern Trail",
-                    subtitle: "A ribbon of light slips into the alleys.",
+                    subtitle: "A line of lanterns leads into the alleys.",
                     systemImage: "lantern.fill",
                     colors: [Color.orange, Color.cyan],
                     foreground: .black,

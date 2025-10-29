@@ -7,7 +7,7 @@ struct CryptScene: View {
     var body: some View {
         SceneView(
             title: "The Crypt",
-            description: "Candles gutter. Shadows keep time with a heartbeat.",
+            description: "Candles flicker. Your heartbeat sounds loud in the quiet.",
             systemImage: "skull.fill",
             gradient: [Color.gray, Color.indigo],
             onBack: onBack,
@@ -30,7 +30,7 @@ struct CryptScene: View {
                 ),
                 SceneChoice(
                     title: "Follow the Blue Flame",
-                    subtitle: "It hovers just beyond reach, bobbing toward a barred arch.",
+                    subtitle: "It hovers just beyond reach, moving toward a barred arch.",
                     systemImage: "flame.fill",
                     colors: [Color.cyan, Color.indigo],
                     foreground: .white,
