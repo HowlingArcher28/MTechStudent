@@ -24,9 +24,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C16E5C822EDF3ACB0017864F /* Notes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Notes.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C16E5C8F2EDF3ACD0017864F /* NotesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C16E5C992EDF3ACD0017864F /* NotesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C16E5CE42EE0961C0017864F /* Notes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Notes.app; path = "/Users/zacharyjensen/Developer/App projects/Notes/build/Debug-iphoneos/Notes.app"; sourceTree = "<absolute>"; };
+		C16E5CE52EE0961C0017864F /* NotesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = NotesTests.xctest; path = "/Users/zacharyjensen/Developer/App projects/Notes/build/Debug-iphoneos/Notes.app/PlugIns/NotesTests.xctest"; sourceTree = "<absolute>"; };
+		C16E5CE62EE0961C0017864F /* NotesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = NotesUITests.xctest; path = "/Users/zacharyjensen/Developer/App projects/Notes/build/Debug-iphoneos/NotesUITests-Runner.app/PlugIns/NotesUITests.xctest"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -66,18 +66,7 @@
 			isa = PBXGroup;
 			children = (
 				C16E5C842EDF3ACB0017864F /* Notes */,
-				C16E5C832EDF3ACB0017864F /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		C16E5C832EDF3ACB0017864F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C16E5C822EDF3ACB0017864F /* Notes.app */,
-				C16E5C8F2EDF3ACD0017864F /* NotesTests.xctest */,
-				C16E5C992EDF3ACD0017864F /* NotesUITests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,7 +91,7 @@
 			packageProductDependencies = (
 			);
 			productName = Notes;
-			productReference = C16E5C822EDF3ACB0017864F /* Notes.app */;
+			productReference = C16E5CE42EE0961C0017864F /* Notes.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C16E5C8E2EDF3ACD0017864F /* NotesTests */ = {
@@ -122,7 +111,7 @@
 			packageProductDependencies = (
 			);
 			productName = NotesTests;
-			productReference = C16E5C8F2EDF3ACD0017864F /* NotesTests.xctest */;
+			productReference = C16E5CE52EE0961C0017864F /* NotesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		C16E5C982EDF3ACD0017864F /* NotesUITests */ = {
@@ -142,7 +131,7 @@
 			packageProductDependencies = (
 			);
 			productName = NotesUITests;
-			productReference = C16E5C992EDF3ACD0017864F /* NotesUITests.xctest */;
+			productReference = C16E5CE62EE0961C0017864F /* NotesUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -178,7 +167,7 @@
 			mainGroup = C16E5C792EDF3ACB0017864F;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = C16E5C832EDF3ACB0017864F /* Products */;
+			productRefGroup = C16E5C792EDF3ACB0017864F;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
