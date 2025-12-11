@@ -14,7 +14,6 @@ struct ContentView: View {
     private let sequence: [String] = ["3", "2", "1", "GO!"]
     private let stepInterval: Duration = .seconds(1)
     
-    private let goHoldInterval: Duration = .milliseconds(900)
 
     @State private var isRunning = false
     @State private var currentToken: String? = nil
@@ -77,6 +76,7 @@ struct ContentView: View {
 
         countdownTask = Task {
             for (index, token) in sequence.enumerated() {
+                print("running")
                 await MainActor.run {
                     withAnimation {
                         currentToken = token
@@ -87,7 +87,7 @@ struct ContentView: View {
                 if index < sequence.count - 1 {
                     try? await Task.sleep(for: stepInterval)
                 } else {
-                    try? await Task.sleep(for: goHoldInterval)
+                    return
                 }
                 if Task.isCancelled { return }
             }
