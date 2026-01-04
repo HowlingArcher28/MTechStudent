@@ -33,12 +33,20 @@ final class GamesListViewModel: ObservableObject {
     func assignOrderIndexOnInsert(game: Game, existing: [Game], context: ModelContext) {
         let maxIndex = existing.map { $0.orderIndex }.max() ?? -1
         game.orderIndex = maxIndex + 1
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            assertionFailure("Failed to save after assigning order index: \(error)")
+        }
     }
 
     func deleteGames(at offsets: IndexSet, from games: [Game], context: ModelContext) {
         offsets.map { games[$0] }.forEach(context.delete)
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            assertionFailure("Failed to save after deleting games: \(error)")
+        }
     }
 
     func moveGames(from source: IndexSet, to destination: Int, games: [Game], context: ModelContext) {
@@ -47,6 +55,10 @@ final class GamesListViewModel: ObservableObject {
         for (idx, game) in mutable.enumerated() {
             game.orderIndex = idx
         }
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            assertionFailure("Failed to save after moving games: \(error)")
+        }
     }
 }

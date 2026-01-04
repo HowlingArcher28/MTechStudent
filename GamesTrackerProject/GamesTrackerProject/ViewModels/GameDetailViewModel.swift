@@ -31,21 +31,33 @@ final class GameDetailViewModel: ObservableObject {
 
     func increment(_ player: Player, by delta: Int, context: ModelContext) {
         player.score += delta
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            assertionFailure("Failed to save after incrementing score: \(error)")
+        }
     }
 
     func addPlayer(to game: Game, name: String, icon: String, startingScore: Int, context: ModelContext) {
         let newIndex = (game.players.map { $0.orderIndex }.max() ?? -1) + 1
         let p = Player(name: name, icon: icon, score: startingScore, orderIndex: newIndex, game: game)
         game.players.append(p)
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            assertionFailure("Failed to save after adding player: \(error)")
+        }
     }
 
     func deletePlayers(at offsets: IndexSet, from players: [Player], context: ModelContext) {
         offsets.map { players[$0] }.forEach { p in
             context.delete(p)
         }
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            assertionFailure("Failed to save after deleting players: \(error)")
+        }
     }
 
     func movePlayers(from source: IndexSet, to destination: Int, players: [Player], context: ModelContext) {
@@ -54,6 +66,10 @@ final class GameDetailViewModel: ObservableObject {
         for (idx, p) in mutable.enumerated() {
             p.orderIndex = idx
         }
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            assertionFailure("Failed to save after moving players: \(error)")
+        }
     }
 }

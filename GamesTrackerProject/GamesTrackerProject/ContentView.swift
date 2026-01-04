@@ -10,6 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var context
+    @Environment(\.scenePhase) private var scenePhase
     @Query(sort: [SortDescriptor(\Game.orderIndex), SortDescriptor(\Game.createdAt)]) private var games: [Game]
     @StateObject private var viewModel = GamesListViewModel()
     @State private var showAddGame = false
@@ -105,6 +106,16 @@ struct ContentView: View {
                 }
             }
         }
+        .onChange(of: scenePhase) { _, newPhase in
+            // Safety net: persist any pending changes when app goes inactive/background.
+            if newPhase == .inactive || newPhase == .background {
+                do {
+                    try context.save()
+                } catch {
+                    assertionFailure("Failed to save model context on scene phase change: \(error)")
+                }
+            }
+        }
     }
 }
 
@@ -112,4 +123,3 @@ struct ContentView: View {
     ContentView()
         .modelContainer(for: [Game.self, Player.self], inMemory: true)
 }
-
