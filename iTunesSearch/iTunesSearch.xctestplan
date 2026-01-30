@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "C6539FDA-A6F6-4AD7-8970-5F4B5D5F17BF",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:iTunesSearch.xcodeproj",
+      "identifier" : "0AD06FA62EB910E800C945F3",
+      "name" : "iTunesSearch"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:iTunesSearch.xcodeproj",
+        "identifier" : "C188FF062F27D5B500AF1ECC",
+        "name" : "iTunesSearchTests"
+      }
+    }
+  ],
+  "version" : 1
+}

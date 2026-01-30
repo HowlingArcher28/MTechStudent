@@ -1,9 +1,3 @@
-//
-//  ContentView.swift
-//  Trip Logger
-//
-//  Created by Jane Madsen on 4/16/25.
-//
 
 import SwiftUI
 import SwiftData

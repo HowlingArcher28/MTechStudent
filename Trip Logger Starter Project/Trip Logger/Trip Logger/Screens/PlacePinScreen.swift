@@ -1,9 +1,3 @@
-//
-//  PlacePinScreen.swift
-//  Trip Logger
-//
-//  Created by Jane Madsen on 4/29/25.
-//
 
 import SwiftUI
 import SwiftData

@@ -1,0 +1,38 @@
+{
+  "configurations" : [
+    {
+      "id" : "DCFFB1E3-8726-460A-AA25-EF2C8AAAD244",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:TDD Mock Data app.xcodeproj",
+      "identifier" : "C1202D0F2F27C83A00E3B91E",
+      "name" : "TDD Mock Data app"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:TDD Mock Data app.xcodeproj",
+        "identifier" : "C1202D1C2F27C83A00E3B91E",
+        "name" : "TDD Mock Data appTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:TDD Mock Data app.xcodeproj",
+        "identifier" : "C1202D262F27C83A00E3B91E",
+        "name" : "TDD Mock Data appUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
