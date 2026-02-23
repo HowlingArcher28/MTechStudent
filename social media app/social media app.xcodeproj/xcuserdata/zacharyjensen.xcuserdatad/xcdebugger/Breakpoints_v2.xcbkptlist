@@ -7,16 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8376D530-BA2D-4928-B5F7-7749BA2416A2"
+            uuid = "2CE67A09-DA73-4F7B-BFEF-6E38B333161C"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "social media app/PersistenceControlsView.swift"
+            filePath = "social media app/API /AuthModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "PersistenceControlsView"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "testServer()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B6D76BC7-3916-4389-8D88-09E198395374"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "social media app/AssignmentsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "4"
+            endingLineNumber = "4"
+            landmarkName = "AssignmentsView"
             landmarkType = "14">
          </BreakpointContent>
       </BreakpointProxy>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "76BFE829-7E90-4F93-93A6-9F8D57C5BC0C"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2CE67A09-DA73-4F7B-BFEF-6E38B333161C"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "social media app/API /AuthModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "testServer()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B6D76BC7-3916-4389-8D88-09E198395374"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "social media app/AssignmentsView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "4"
+            endingLineNumber = "4"
+            landmarkName = "AssignmentsView"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "B6D76BC7-3916-4389-8D88-09E198395374 - 72890d8456c8809d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "social_media_app.AssignmentsView.auth.getter : social_media_app.AuthModel"
+                  moduleName = "social media app.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zacharyjensen/Developer/App%20projects/social%20media%20app/social%20media%20app/AssignmentsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "B6D76BC7-3916-4389-8D88-09E198395374 - 817614c267074ee0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "social_media_app.AssignmentsView.$auth.getter : SwiftUI.EnvironmentObject&lt;social_media_app.AuthModel&gt;.Wrapper"
+                  moduleName = "social media app.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zacharyjensen/Developer/App%20projects/social%20media%20app/social%20media%20app/AssignmentsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "B6D76BC7-3916-4389-8D88-09E198395374 - cf82d24134884744"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 0 of social_media_app.AssignmentsView.init(auth: SwiftUI.EnvironmentObject&lt;social_media_app.AuthModel&gt;, services: SwiftUI.EnvironmentObject&lt;social_media_app.ServicesModel&gt;) -&gt; social_media_app.AssignmentsView"
+                  moduleName = "social media app.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zacharyjensen/Developer/App%20projects/social%20media%20app/social%20media%20app/AssignmentsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "B6D76BC7-3916-4389-8D88-09E198395374 - 40e7c5122a9ff80"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "social_media_app.AssignmentsView.init() -&gt; social_media_app.AssignmentsView"
+                  moduleName = "social media app.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/zacharyjensen/Developer/App%20projects/social%20media%20app/social%20media%20app/AssignmentsView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "4"
+                  endingLineNumber = "4">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
