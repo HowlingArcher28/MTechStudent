@@ -10,7 +10,7 @@ import SwiftUI
 struct EnhanceView: View {
 
     let image: UIImage
-//    @EnvironmentObject var pipeline: ImagePipeline
+    @EnvironmentObject var navigationManager: NavigationManager
 
     var body: some View {
 
@@ -33,9 +33,15 @@ struct EnhanceView: View {
 
             Text("AI Upscaling...")
 
+            PrimaryButton(title: "Next: Perfect Fit")
+                .onTapGesture {
+                    navigationManager.goToPerfectFit(image: image)
+                }
+
             Spacer()
 
         }
         .padding()
     }
 }
+

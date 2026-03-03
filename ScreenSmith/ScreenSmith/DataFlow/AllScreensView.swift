@@ -19,7 +19,7 @@ struct AllScreensView: View {
                                 .foregroundStyle(.secondary)
                             PrimaryButton(title: "Go to Import")
                                 .onTapGesture {
-                                    navigationManager.path.append(Screen.importScreen)
+                                    navigationManager.path.append(Screen.importView)
                                 }
                         }
                         .padding()
@@ -31,7 +31,7 @@ struct AllScreensView: View {
                                 .foregroundStyle(.secondary)
                             PrimaryButton(title: "Go to Import")
                                 .onTapGesture {
-                                    navigationManager.path.append(Screen.importScreen)
+                                    navigationManager.path.append(Screen.importView)
                                 }
                         }
                         .padding()
@@ -47,3 +47,4 @@ struct AllScreensView: View {
         }
     }
 }
+

@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ImportView: View {
     
     @EnvironmentObject var navigationManager: NavigationManager
+    @State private var selectedItem: PhotosPickerItem?
+    @State private var showingAllScreens = false
 
     func didSelect(image: UIImage) {
         navigationManager.goToEnhance(image: image)
@@ -25,19 +28,30 @@ struct ImportView: View {
             Text("Import")
                 .font(.title2)
 
-            GlassCard {
+            PhotosPicker(selection: $selectedItem, matching: .images, photoLibrary: .shared()) {
+                GlassCard {
 
-                VStack(spacing: 12) {
+                    VStack(spacing: 12) {
 
-                    Image(systemName: "plus")
-                        .font(.system(size: 40))
-                        .foregroundColor(.blue)
+                        Image(systemName: "plus")
+                            .font(.system(size: 40))
+                            .foregroundColor(.blue)
 
-                    Text("Select Photo")
+                        Text("Select Photo")
+
+                    }
+                    .frame(maxWidth: .infinity, minHeight: 140)
 
                 }
-                .frame(maxWidth: .infinity, minHeight: 140)
-
+            }
+            .onChange(of: selectedItem) { newItem in
+                guard let newItem = newItem else { return }
+                Task {
+                    if let data = try? await newItem.loadTransferable(type: Data.self),
+                       let uiImage = UIImage(data: data) {
+                        didSelect(image: uiImage)
+                    }
+                }
             }
 
             GlassCard {
@@ -73,5 +87,16 @@ struct ImportView: View {
                 endPoint: .bottom
             )
         )
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("All Screens") {
+                    showingAllScreens = true
+                }
+            }
+        }
+        .sheet(isPresented: $showingAllScreens) {
+            AllScreensView()
+                .environmentObject(navigationManager)
+        }
     }
 }
