@@ -29,9 +29,22 @@
 		C107A4492F50A263000CE1AA /* ScreenSmithUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenSmithUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C1A2F8A02F573165006B6FEE /* Exceptions for "ScreenSmith" folder in "ScreenSmith" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AI/ImageEnhancer.swift,
+			);
+			target = C107A4312F50A261000CE1AA /* ScreenSmith */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C107A4342F50A261000CE1AA /* ScreenSmith */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C1A2F8A02F573165006B6FEE /* Exceptions for "ScreenSmith" folder in "ScreenSmith" target */,
+			);
 			path = ScreenSmith;
 			sourceTree = "<group>";
 		};
