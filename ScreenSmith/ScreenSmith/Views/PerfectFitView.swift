@@ -9,6 +9,9 @@ import SwiftUI
 
 struct PerfectFitView: View {
 
+    let image: UIImage
+//    @EnvironmentObject var pipeline: ImagePipeline
+
     var body: some View {
 
         VStack(spacing: 20) {
@@ -33,3 +36,4 @@ struct PerfectFitView: View {
         .padding()
     }
 }
+

@@ -8,7 +8,12 @@
 import SwiftUI
 
 struct ImportView: View {
+    
+    @EnvironmentObject var navigationManager: NavigationManager
 
+    func didSelect(image: UIImage) {
+        navigationManager.goToEnhance(image: image)
+    }
     var body: some View {
 
         VStack(spacing: 20) {
@@ -61,7 +66,8 @@ struct ImportView: View {
             LinearGradient(
                 colors: [
                     Color.black,
-                    Color.blue.opacity(0.2)
+                    Color.black,
+                    Color.blue.opacity(5),
                 ],
                 startPoint: .top,
                 endPoint: .bottom

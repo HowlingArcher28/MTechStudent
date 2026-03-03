@@ -9,6 +9,9 @@ import SwiftUI
 
 struct EnhanceView: View {
 
+    let image: UIImage
+//    @EnvironmentObject var pipeline: ImagePipeline
+
     var body: some View {
 
         VStack(spacing: 20) {
@@ -18,12 +21,10 @@ struct EnhanceView: View {
 
             GlassCard {
 
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
                     .frame(height: 400)
-                    .overlay(
-                        Text("Image Preview")
-                    )
 
             }
 
