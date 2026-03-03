@@ -7,7 +7,7 @@ struct ContentView: View {
     @State private var newName = ""
 
     var body: some View {
-        @Bindable var model = model   // ← this line is the key
+        @Bindable var model = model
 
         NavigationStack {
             VStack(spacing: 20) {
@@ -30,7 +30,7 @@ struct ContentView: View {
                 // Selection Count
                 Stepper(
                     "Select \(model.selectionCount) people",
-                    value: $model.selectionCount,                 // ← now valid
+                    value: $model.selectionCount,                 
                     in: 1...(max(model.people.count, 1))
                 )
                 .padding(.horizontal)
