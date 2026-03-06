@@ -1,30 +1,38 @@
-//
-//  MainTabsView.swift
-//
-
 import SwiftUI
 
 struct MainTabsView: View {
+    @EnvironmentObject var auth: AuthModel
+    @EnvironmentObject var services: ServicesModel
+
     var body: some View {
         TabView {
-            ContentView()
-                .tabItem {
-                    Label("Home", systemImage: "house")
-                }
-
-            TodayView()
+            TodayView(cohort: "default")
                 .tabItem {
                     Label("Today", systemImage: "calendar")
                 }
+                .environmentObject(services)
 
-            AssignmentsView()
+            CalendarListView(cohort: "default")
                 .tabItem {
-                    Label("Assignments", systemImage: "book")
+                    Label("Assignments", systemImage: "list.bullet")
                 }
+                .environmentObject(services)
+
+            ProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.circle")
+                }
+                .environmentObject(auth)
         }
     }
 }
 
 #Preview {
-    MainTabsView()
+    let api = APIClient(baseURL: URL(string: "https://social-media-app.ryanplitt.com")!)
+    let authModel = AuthModel(apiClient: api)
+    let servicesModel = ServicesModel(apiClient: api, auth: authModel)
+    
+    return MainTabsView()
+        .environmentObject(authModel)
+        .environmentObject(servicesModel)
 }

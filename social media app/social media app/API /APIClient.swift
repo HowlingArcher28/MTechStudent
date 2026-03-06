@@ -9,55 +9,124 @@ class APIClient {
         self.session = URLSession.shared
     }
     
-    private func request<T: Decodable>(_ endpoint: String, method: String = "GET", body: Data? = nil, queryItems: [URLQueryItem]? = nil) async throws -> T {
-        var urlComponents = URLComponents(url: baseURL.appendingPathComponent(endpoint), resolvingAgainstBaseURL: false)!
-        urlComponents.queryItems = queryItems
-        
-        var request = URLRequest(url: urlComponents.url!)
-        request.httpMethod = method
+    // MARK: - Sign In
+    func signIn(email: String, password: String) async throws -> SignInResponseDTO {
+        let url = baseURL.appendingPathComponent("auth/login")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = body
+        
+        let body = ["email": email, "password": password]
+        request.httpBody = try JSONEncoder().encode(body)
         
         let (data, response) = try await session.data(for: request)
+        try handleErrors(response: response, data: data)
+        return try JSONDecoder().decode(SignInResponseDTO.self, from: data)
+    }
+    
+    // MARK: - Calendar Today
+    func calendarToday(userSecret: String, cohort: String) async throws -> CalendarEntryResponseDTO {
+        var components = URLComponents(url: baseURL.appendingPathComponent("calendar/today"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [
+            URLQueryItem(name: "cohort", value: cohort)
+        ]
         
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(userSecret)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await session.data(for: request)
+        try handleErrors(response: response, data: data)
+        return try JSONDecoder().decode(CalendarEntryResponseDTO.self, from: data)
+    }
+    
+    // MARK: - Calendar All
+    func calendarAll(userSecret: String, cohort: String) async throws -> [CalendarEntryResponseDTO] {
+        var components = URLComponents(url: baseURL.appendingPathComponent("calendar/all"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [
+            URLQueryItem(name: "cohort", value: cohort)
+        ]
+        
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(userSecret)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await session.data(for: request)
+        try handleErrors(response: response, data: data)
+        return try JSONDecoder().decode([CalendarEntryResponseDTO].self, from: data)
+    }
+    
+    // MARK: - Get Assignment
+    func getAssignment(userSecret: String, id: String, includeProgress: Bool = true, includeFAQs: Bool = true) async throws -> AssignmentResponseDTO {
+        var components = URLComponents(url: baseURL.appendingPathComponent("assignment/\(id)"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [
+            URLQueryItem(name: "includeProgress", value: String(includeProgress)),
+            URLQueryItem(name: "includeFAQs", value: String(includeFAQs))
+        ]
+        
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(userSecret)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await session.data(for: request)
+        try handleErrors(response: response, data: data)
+        return try JSONDecoder().decode(AssignmentResponseDTO.self, from: data)
+    }
+    
+    // MARK: - Get All Assignments
+    func assignmentsAll(userSecret: String, cohort: String, includeProgress: Bool = true, includeFAQs: Bool = true) async throws -> [AssignmentResponseDTO] {
+        var components = URLComponents(url: baseURL.appendingPathComponent("assignment/all"), resolvingAgainstBaseURL: false)!
+        components.queryItems = [
+            URLQueryItem(name: "includeProgress", value: String(includeProgress)),
+            URLQueryItem(name: "includeFAQs", value: String(includeFAQs)),
+            URLQueryItem(name: "cohort", value: cohort)
+        ]
+        
+        var request = URLRequest(url: components.url!)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(userSecret)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await session.data(for: request)
+        try handleErrors(response: response, data: data)
+        return try JSONDecoder().decode([AssignmentResponseDTO].self, from: data)
+    }
+    
+    // MARK: - Update Assignment Progress
+    func updateAssignmentProgress(userSecret: String, assignmentID: String, progress: String) async throws -> AssignmentResponseDTO {
+        let url = baseURL.appendingPathComponent("assignment/progress")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("Bearer \(userSecret)", forHTTPHeaderField: "Authorization")
+        
+        let body = [
+            "assignmentID": assignmentID,
+            "progress": progress
+        ]
+        request.httpBody = try JSONEncoder().encode(body)
+        
+        let (data, response) = try await session.data(for: request)
+        try handleErrors(response: response, data: data)
+        return try JSONDecoder().decode(AssignmentResponseDTO.self, from: data)
+    }
+    
+    // MARK: - Error Handling
+    private func handleErrors(response: URLResponse, data: Data) throws {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIErrorDTO(message: "Invalid response")
         }
         
-        if httpResponse.statusCode >= 400 {
-            let apiError = try? JSONDecoder().decode(APIErrorDTO.self, from: data)
-            throw apiError ?? APIErrorDTO(message: "Unknown server error")
-        }
+        print("Status: \(httpResponse.statusCode), Response: \(String(data: data, encoding: .utf8) ?? "nil")")
         
-        return try JSONDecoder().decode(T.self, from: data)
-    }
-    
-    // MARK: Sign In
-    func signIn(email: String, password: String) async throws -> SignInResponseDTO {
-        let body = try JSONEncoder().encode(["email": email, "password": password])
-        return try await request("signIn", method: "POST", body: body)
-    }
-    
-    // MARK: User Profile
-    func getUserProfile(userUUID: String, userSecret: String) async throws -> UserProfileDTO {
-        return try await request("userProfile", queryItems: [
-            URLQueryItem(name: "userUUID", value: userUUID),
-            URLQueryItem(name: "userSecret", value: userSecret)
-        ])
-    }
-    
-    // MARK: Posts
-    func getPosts(userSecret: String, pageNumber: Int? = 0) async throws -> [PostDTO] {
-        var queryItems = [URLQueryItem(name: "userSecret", value: userSecret)]
-        if let page = pageNumber {
-            queryItems.append(URLQueryItem(name: "pageNumber", value: "\(page)"))
+        if httpResponse.statusCode >= 400 {
+            if let apiError = try? JSONDecoder().decode(APIErrorDTO.self, from: data) {
+                throw apiError
+            }
+            throw APIErrorDTO(message: "Server error: \(httpResponse.statusCode)")
         }
-        return try await request("posts", queryItems: queryItems)
-    }
-    
-    func createPost(userSecret: String, title: String, body: String) async throws -> PostDTO {
-        let jsonBody = ["userSecret": userSecret, "post": ["title": title, "body": body]] as [String : Any]
-        let data = try JSONSerialization.data(withJSONObject: jsonBody)
-        return try await request("createPost", method: "POST", body: data)
     }
 }

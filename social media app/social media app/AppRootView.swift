@@ -2,15 +2,16 @@ import SwiftUI
 
 struct AppRootView: View {
 
-    // AuthModel gets an APIClient
-    @StateObject private var auth = AuthModel(
-        apiClient: APIClient(baseURL: URL(string: "https://social-media-app.ryanplitt.com")!)
-    )
+    @StateObject private var auth: AuthModel
 
-    // ServicesModel also gets an APIClient
-    @StateObject private var services = ServicesModel(
-        apiClient: APIClient(baseURL: URL(string: "https://social-media-app.ryanplitt.com")!)
-    )
+    @StateObject private var services: ServicesModel
+
+    init() {
+        let api = APIClient(baseURL: URL(string: "https://social-media-app.ryanplitt.com")!)
+        let authModel = AuthModel(apiClient: api)
+        _auth = StateObject(wrappedValue: authModel)
+        _services = StateObject(wrappedValue: ServicesModel(apiClient: api, auth: authModel))
+    }
 
     var body: some View {
         Group {

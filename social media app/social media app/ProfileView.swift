@@ -6,43 +6,46 @@ struct ProfileView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            if let token = auth.bearerToken {
+            if let user = auth.user {
                 Text("Logged in!")
                     .font(.title2)
                     .bold()
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Bearer Token:")
+                    Text("Name:")
                         .font(.headline)
-                    Text(token)
+                    Text("\(user.firstName) \(user.lastName)")
                         .font(.footnote)
                         .foregroundColor(.gray)
-                        .lineLimit(3)
-                        .truncationMode(.middle)
                 }
                 .padding()
                 .background(Color(.secondarySystemBackground))
                 .cornerRadius(8)
 
-                if let secret = auth.userSecret {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("User Secret:")
-                            .font(.headline)
-                        Text(secret)
-                            .font(.footnote)
-                            .foregroundColor(.gray)
-                            .lineLimit(3)
-                            .truncationMode(.middle)
-                    }
-                    .padding()
-                    .background(Color(.secondarySystemBackground))
-                    .cornerRadius(8)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Username:")
+                        .font(.headline)
+                    Text(user.userName)
+                        .font(.footnote)
+                        .foregroundColor(.gray)
                 }
+                .padding()
+                .background(Color(.secondarySystemBackground))
+                .cornerRadius(8)
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Email:")
+                        .font(.headline)
+                    Text(user.email)
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+                }
+                .padding()
+                .background(Color(.secondarySystemBackground))
+                .cornerRadius(8)
 
                 Button(role: .destructive) {
-                    auth.bearerToken = nil
-                    auth.userSecret = nil
-                    auth.isLoggedIn = false
+                    auth.user = nil
                 } label: {
                     Text("Sign Out")
                         .bold()

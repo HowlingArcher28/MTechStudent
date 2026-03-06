@@ -7,9 +7,6 @@
 
 import Foundation
 
-// Do NOT globally make String Identifiable; it conflicts with SwiftUI and other extensions.
-// Instead, use a wrapper if you need Identifiable conformance.
-
 struct IdentifiableString: Identifiable {
     let value: String
     var id: String { value }

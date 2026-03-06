@@ -2,14 +2,20 @@ import SwiftUI
 import Foundation
 import Combine
 
+struct AssignmentAlertMessage: Identifiable {
+    let id = UUID()
+    let message: String
+}
+
 struct AssignmentDetailView: View {
     
     let assignmentID: String
     
     @State private var assignment: AssignmentResponseDTO?
-    @State private var alertMessage: AlertMessage?
+    @State private var alertMessage: AssignmentAlertMessage?
     
     @EnvironmentObject var auth: AuthModel
+    @EnvironmentObject var services: ServicesModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -20,9 +26,10 @@ struct AssignmentDetailView: View {
                     .font(.title2)
                     .bold()
                 
-                if let dueDate = ISO8601DateFormatter().date(from: assignment.dueOn) {
+                if let dueOn = assignment.dueOn,
+                   let dueDate = ISO8601DateFormatter().date(from: dueOn) {
                     Text(dueDate.formatted(date: .abbreviated, time: .shortened))
-                        .font(.subheadline)
+                        .font(.footnote)
                         .foregroundColor(.gray)
                 }
                 
@@ -42,11 +49,10 @@ struct AssignmentDetailView: View {
                 ProgressView()
             }
         }
-        .padding()
         .task {
             await loadAssignment()
         }
-        .alert(item: $alertMessage) { (alert: AlertMessage) in
+        .alert(item: $alertMessage) { alert in
             Alert(title: Text("Error"), message: Text(alert.message), dismissButton: .default(Text("OK")))
         }
     }
@@ -54,10 +60,9 @@ struct AssignmentDetailView: View {
     @MainActor
     private func loadAssignment() async {
         do {
-            // Use API through AuthModel
-            assignment = try await auth.api.assignmentGet(id: assignmentID)
+            assignment = await services.fetchAssignment(id: assignmentID)
         } catch {
-            alertMessage = AlertMessage(message: error.localizedDescription)
+            alertMessage = AssignmentAlertMessage(message: error.localizedDescription)
         }
     }
 }

@@ -1,6 +1,7 @@
 import SwiftUI
 import Foundation
 
+
 struct AssignmentsView: View {
 
     @EnvironmentObject var services: ServicesModel
@@ -18,9 +19,10 @@ struct AssignmentsView: View {
                     VStack(alignment: .leading) {
                         Text(assignment.name)
                             .font(.headline)
-                        if let dueDate = ISO8601DateFormatter().date(from: assignment.dueOn) {
+                        if let dueOn = assignment.dueOn,
+                           let dueDate = ISO8601DateFormatter().date(from: dueOn) {
                             Text(dueDate.formatted(date: .abbreviated, time: .shortened))
-                                .font(.subheadline)
+                                .font(.footnote)
                                 .foregroundColor(.gray)
                         }
                     }
@@ -43,11 +45,7 @@ struct AssignmentsView: View {
 
     @MainActor
     private func loadAssignments() async {
-        do {
-            // Call directly on the ServicesModel instance
-            assignments = try await services.fetchAssignments(cohort: cohort)
-        } catch {
-            alertMessage = AlertMessage(message: error.localizedDescription)
-        }
+        await services.loadAll(cohort: cohort)
+        assignments = services.allAssignments
     }
 }

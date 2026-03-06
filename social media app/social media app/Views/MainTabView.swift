@@ -7,13 +7,13 @@ struct MainTabView: View {
 
     var body: some View {
         TabView {
-            TodayView(cohort: "default")
+            TodayView(cohort: "fall2025")  
                 .tabItem {
                     Label("Today", systemImage: "calendar")
                 }
                 .environmentObject(services)
 
-            CalendarListView(cohort: "default")
+            CalendarListView(cohort: "fall2025")
                 .tabItem {
                     Label("Assignments", systemImage: "list.bullet")
                 }

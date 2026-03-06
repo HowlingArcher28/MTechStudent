@@ -50,8 +50,6 @@ struct LessonFeedbackView: View {
         }
 
         do {
-            // Call your API here, e.g.:
-            // let response = try await apiClient.submitFeedback(lessonID: lessonID, feedback: feedback)
             print("Feedback submitted for lesson \(lessonID): \(feedback)")
             feedback = ""
         } catch {
