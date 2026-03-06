@@ -1,51 +1,27 @@
-//import SwiftUI
-//
-//struct AppRootView: View {
-//    @State private var services: ServicesModel
-//    @State private var auth: AuthModel
-//    @State private var model = AppModel()
-//
-//    init() {
-//        _services = State(initialValue: ServicesModel())
-//        let services = self.services
-//        _auth = State(initialValue: AuthModel(services: services))
-//    }
-//
-//    var body: some View {
-//        ContentView()
-//            .environment(model)
-//            .environment(services)
-//            .environment(auth)
-//    }
-//}
-//
-//#Preview {
-//    AppRootView()
-//}
-
 import SwiftUI
 
 struct AppRootView: View {
-    @State private var services: ServicesModel
-    @State private var auth: AuthModel
-    @State private var model = AppModel()
 
-    init() {
-        let services = ServicesModel()
-        let auth = AuthModel(services: services)
+    // AuthModel gets an APIClient
+    @StateObject private var auth = AuthModel(
+        apiClient: APIClient(baseURL: URL(string: "https://social-media-app.ryanplitt.com")!)
+    )
 
-        _services = State(initialValue: services)
-        _auth = State(initialValue: auth)
-    }
+    // ServicesModel also gets an APIClient
+    @StateObject private var services = ServicesModel(
+        apiClient: APIClient(baseURL: URL(string: "https://social-media-app.ryanplitt.com")!)
+    )
 
     var body: some View {
-        ContentView()
-            .environment(model)
-            .environment(services)
-            .environment(auth)
+        Group {
+            if auth.isLoggedIn {
+                MainTabView()
+                    .environmentObject(auth)
+                    .environmentObject(services)
+            } else {
+                LoginView()
+                    .environmentObject(auth)
+            }
+        }
     }
-}
-
-#Preview {
-    AppRootView()
 }

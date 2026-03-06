@@ -1,70 +1,36 @@
 import SwiftUI
 
 struct TodayView: View {
-    @Environment(AuthModel.self) private var auth
-    @Environment(ServicesModel.self) private var services
-    @State private var entry: APIClient.CalendarEntryResponseDTO?
-    @State private var error: String?
 
-    private func loadToday() async {
-        do {
-            entry = try await services.api.calendarToday(cohort: services.cohort)
-            error = nil
-        } catch {
-            self.error = (error as NSError).localizedDescription
-        }
-    }
+    @EnvironmentObject var services: ServicesModel
+    let cohort: String
 
     var body: some View {
-        Group {
-            if let error {
-                VStack(spacing: 12) {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.system(size: 48))
-                        .foregroundStyle(.orange)
-                    Text(error)
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(.secondary)
-                    Button("Retry") {
-                        Task { await loadToday() }
+        VStack {
+            if services.allAssignments.isEmpty {
+                ProgressView("Loading today’s assignments...")
+                    .task {
+                        await services.loadAll(cohort: cohort)
                     }
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if entry == nil {
-                ProgressView("Loading Today…")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if let entry {
-                Group {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Date: \(String(describing: entry.date))")
-                            .font(.headline)
-                        if entry.holiday {
-                            Text("Holiday")
-                                .foregroundStyle(.secondary)
-                        } else {
-                            if let lesson = entry.lessonName { Text("Lesson: \(lesson)") }
-                            if let objective = entry.mainObjective { Text("Objective: \(objective)") }
-                            let dueCount = entry.assignmentsDue?.count ?? 0
-                            Text("Assignments Due: \(dueCount)")
-                        }
+            } else {
+                List(services.allAssignments, id: \.id) { assignment in
+                    HStack {
+                        Text(assignment.name)
+                            .font(.body)
                         Spacer()
+                        if let dueDate = ISO8601DateFormatter().date(from: assignment.dueOn) {
+                            Text(dueDate.formatted(date: .abbreviated, time: .shortened))
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                        }
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .padding(.vertical, 4)
                 }
             }
         }
-        .refreshable {
-            await loadToday()
+        .alert(item: $services.alertMessage) { alert in
+            Alert(title: Text("Error"), message: Text(alert.message), dismissButton: .default(Text("OK")))
         }
-        .task {
-            await loadToday()
-        }
+        .navigationTitle("Today")
     }
-}
-
-#Preview {
-    TodayView()
-        .environment(AuthModel())
-        .environment(ServicesModel())
 }

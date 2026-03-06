@@ -17,7 +17,7 @@ final class ImageEnhancer {
         vibranceFilter.amount = vibrance
 
         let noiseFilter = CIFilter.noiseReduction()
-        #imageLiteral(resourceName: "simulator_screenshot_1D3BAD78-673F-4317-BACE-CF7FF84CBB58.png")
+
         noiseFilter.inputImage = vibranceFilter.outputImage
         noiseFilter.luminanceNoiseReductionAmount = noise
         noiseFilter.colorNoiseReductionAmount = noise

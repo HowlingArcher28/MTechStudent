@@ -1,130 +1,63 @@
 import SwiftUI
+import Foundation
+import Combine
 
 struct AssignmentDetailView: View {
-    @Environment(ServicesModel.self) private var services
-    @Environment(AuthModel.self) private var auth
-
+    
     let assignmentID: String
-
-    @State private var assignment: APIClient.AssignmentResponseDTO?
-    @State private var error: String?
-    @State private var isLoading = false
-
+    
+    @State private var assignment: AssignmentResponseDTO?
+    @State private var alertMessage: AlertMessage?
+    
+    @EnvironmentObject var auth: AuthModel
+    
     var body: some View {
-        Group {
-            if let error {
-                VStack(spacing: 12) {
-                    Image(systemName: "exclamationmark.triangle")
-                    Text(error)
-                        .foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 16) {
+            
+            if let assignment = assignment {
+                
+                Text(assignment.name)
+                    .font(.title2)
+                    .bold()
+                
+                if let dueDate = ISO8601DateFormatter().date(from: assignment.dueOn) {
+                    Text(dueDate.formatted(date: .abbreviated, time: .shortened))
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if isLoading || assignment == nil {
-                ProgressView("Loading Assignment…")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if let assignment {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text(assignment.name)
-                            .font(.title.bold())
-                        if let body = assignment.body, !body.isEmpty {
-                            Text(body)
+                
+                if !assignment.faqs.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("FAQs")
+                            .font(.headline)
+                        
+                        ForEach(assignment.faqs, id: \.id) { faq in
+                            Text(faq.question)
+                                .font(.subheadline)
                         }
-                        if let due = assignment.dueOn {
-                            Text("Due: \(due)")
-                                .foregroundStyle(.secondary)
-                        }
-
-                        ProgressControls(assignmentID: assignment.id, current: assignment.userProgress)
                     }
-                    .padding()
                 }
+                
+            } else {
+                ProgressView()
             }
         }
-        .navigationTitle("Assignment")
-        .task { await load() }
-        .refreshable { await load() }
+        .padding()
+        .task {
+            await loadAssignment()
+        }
+        .alert(item: $alertMessage) { (alert: AlertMessage) in
+            Alert(title: Text("Error"), message: Text(alert.message), dismissButton: .default(Text("OK")))
+        }
     }
-
-    private func load() async {
-        isLoading = true
-        defer { isLoading = false }
+    
+    @MainActor
+    private func loadAssignment() async {
         do {
-            let req = try services.api.assignmentByID(id: assignmentID, includeProgress: true, includeFAQs: true)
-            self.assignment = try await services.api.performRequest(req)
-            self.error = nil
+            // Use API through AuthModel
+            assignment = try await auth.api.assignmentGet(id: assignmentID)
         } catch {
-            self.error = (error as NSError).localizedDescription
+            alertMessage = AlertMessage(message: error.localizedDescription)
         }
-    }
-}
-
-private struct ProgressControls: View {
-    @Environment(ServicesModel.self) private var services
-    let assignmentID: String
-    @State var current: String?
-    @State private var isSaving = false
-    @State private var error: String?
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Your Progress")
-                .font(.headline)
-            HStack {
-                ForEach(["notStarted", "inProgress", "complete"], id: \.self) { state in
-                    Button {
-                        Task { await set(state) }
-                    } label: {
-                        Label(stateLabel(state), systemImage: current == state ? "checkmark.circle.fill" : "circle")
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(isSaving)
-                }
-                Spacer()
-                Button("Clear") { Task { await clear() } }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.red)
-                    .disabled(isSaving)
-            }
-            if let error { Text(error).foregroundStyle(.red).font(.footnote) }
-        }
-    }
-
-    private func stateLabel(_ s: String) -> String {
-        switch s { case "notStarted": return "Not Started"; case "inProgress": return "In Progress"; case "complete": return "Complete"; default: return s }
-    }
-
-    private func set(_ state: String) async {
-        isSaving = true
-        defer { isSaving = false }
-        do {
-            _ = try await services.api.assignmentSetProgress(assignmentID: assignmentID, progress: state)
-            self.current = state
-            self.error = nil
-        } catch {
-            self.error = (error as NSError).localizedDescription
-        }
-    }
-
-    private func clear() async {
-        isSaving = true
-        defer { isSaving = false }
-        do {
-            try await services.api.assignmentClearProgress(assignmentID: assignmentID)
-            self.current = nil
-            self.error = nil
-        } catch {
-            self.error = (error as NSError).localizedDescription
-        }
-    }
-}
-
-#Preview {
-    let services = ServicesModel()
-    let auth = AuthModel(services: services)
-    return NavigationStack {
-        AssignmentDetailView(assignmentID: "example")
-            .environment(services)
-            .environment(auth)
     }
 }

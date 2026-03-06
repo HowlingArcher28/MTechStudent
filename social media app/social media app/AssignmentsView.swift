@@ -1,58 +1,53 @@
 import SwiftUI
+import Foundation
 
 struct AssignmentsView: View {
-    @Environment(AuthModel.self) private var auth
-    @Environment(ServicesModel.self) private var services
-    @State private var assignments: [APIClient.AssignmentResponseDTO] = []
-    @State private var error: String?
+
+    @EnvironmentObject var services: ServicesModel
+    let cohort: String
+
+    @State private var assignments: [AssignmentResponseDTO] = []
+    @State private var alertMessage: AlertMessage?
 
     var body: some View {
-        Group {
-            if let error {
-                VStack(spacing: 12) {
-                    Image(systemName: "exclamationmark.triangle")
-                    Text(error)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if assignments.isEmpty {
-                ProgressView("Loading Assignments…")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+        VStack {
+            if assignments.isEmpty {
+                ProgressView()
             } else {
-                List(assignments) { item in
-                    HStack {
-                        Image(systemName: "checklist")
-                        VStack(alignment: .leading) {
-                            Text(item.name)
-                            Text("Due: \(String(describing: item.dueOn))")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
+                List(assignments, id: \.id) { assignment in
+                    VStack(alignment: .leading) {
+                        Text(assignment.name)
+                            .font(.headline)
+                        if let dueDate = ISO8601DateFormatter().date(from: assignment.dueOn) {
+                            Text(dueDate.formatted(date: .abbreviated, time: .shortened))
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
                         }
                     }
+                    .padding(.vertical, 4)
                 }
             }
         }
         .task {
-            do {
-                print("[AssignmentsView] Fetching assignments for cohort:", services.cohort)
-                assignments = try await services.api.assignmentsAll(cohort: services.cohort)
-                print("[AssignmentsView] Loaded assignments:", assignments.count)
-            } catch {
-                print("[AssignmentsView] Assignments fetch failed:", error)
-                self.error = (error as NSError).localizedDescription
-            }
+            await loadAssignments()
         }
+        .alert(item: $alertMessage) { alert in
+            Alert(
+                title: Text("Error"),
+                message: Text(alert.message),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+        .navigationTitle("Assignments")
     }
-}
 
-#Preview {
-    // Construct a ServicesModel using API info for previews.
-    // If your project exposes an API config type (e.g., APIInfo.shared), replace the initializer below accordingly.
-    let services = ServicesModel() // TODO: If available, initialize with API info, e.g., ServicesModel(apiInfo: APIInfo.shared)
-    let auth = AuthModel(services: services)
-    return NavigationStack {
-        AssignmentsView()
-            .environment(auth)
-            .environment(services)
+    @MainActor
+    private func loadAssignments() async {
+        do {
+            // Call directly on the ServicesModel instance
+            assignments = try await services.fetchAssignments(cohort: cohort)
+        } catch {
+            alertMessage = AlertMessage(message: error.localizedDescription)
+        }
     }
 }
