@@ -5,62 +5,96 @@ import CoreImage.CIFilterBuiltins
 final class ImageEnhancer {
     private let context = CIContext()
 
-    // Enhance with optional upscaling. Scale > 1.0 will upscale using Lanczos.
+    /// Enhances and de-pixelates a low-res image.
+    /// - Parameters:
+    ///   - image: Input image.
+    ///   - upscaleFactor: Lanczos upscale factor (e.g., 3.0 for strong de-pixelation).
+    ///   - medianRadius: Median filter radius for block smoothing.
+    ///   - noiseLevel: Noise reduction level (0-1).
+    ///   - noiseSharpness: Edge preservation for noise reduction (0-1).
+    ///   - unsharpRadius: Unsharp mask radius for detail restoration.
+    ///   - unsharpIntensity: Unsharp mask intensity.
+    ///   - finalDownscale: Optional final scale to slightly reduce size and blend artifacts (e.g., 0.75-0.9).
+    ///   - exposureEV, vibrance, contrast, saturation: Color tweaks for perceived quality.
     func enhance(_ image: UIImage,
-                 exposure: Float = 0.2,
+                 upscaleFactor: CGFloat = 3.0,
+                 medianRadius: Float = 1.0,
+                 noiseLevel: Float = 0.25,
+                 noiseSharpness: Float = 0.5,
+                 unsharpRadius: Float = 2.0,
+                 unsharpIntensity: Float = 0.6,
+                 finalDownscale: CGFloat = 0.85,
+                 exposureEV: Float = 0.2,
                  vibrance: Float = 0.9,
-                 sharpness: Float = 0.8,
-                 noise: Float = 0.2,
                  contrast: Float = 1.12,
-                 saturation: Float = 1.1,
-                 upscale: Bool = true,
-                 scaleFactor: CGFloat = 2.0) -> UIImage {
+                 saturation: Float = 1.1) -> UIImage {
 
         guard let cgImage = image.cgImage else { return image }
         var current = CIImage(cgImage: cgImage)
 
-        // Optional: Upscale early to give filters more pixels to work with
-        if upscale, scaleFactor > 1.0 {
+        // 1) Strong upscale to reduce visible block edges
+        if upscaleFactor > 1.0 {
             let lanczos = CIFilter.lanczosScaleTransform()
             lanczos.inputImage = current
-            lanczos.scale = Float(scaleFactor)
+            lanczos.scale = Float(upscaleFactor)
             lanczos.aspectRatio = 1.0
-            if let out = lanczos.outputImage { current = out } // if fails, continue with original size
+            if let out = lanczos.outputImage { current = out }
         }
 
-        // 1) Exposure
-        let exposureFilter = CIFilter.exposureAdjust()
-        exposureFilter.inputImage = current
-        exposureFilter.ev = exposure
-        guard let expOut = exposureFilter.outputImage else { return image }
+        // 2) Median filter to smooth pixel blocks while preserving edges
+        let median = CIFilter.median()
+        median.inputImage = current
+        if let out = median.outputImage { current = out }
 
-        // 2) Vibrance
-        let vibranceFilter = CIFilter.vibrance()
-        vibranceFilter.inputImage = expOut
-        vibranceFilter.amount = vibrance
-        guard let vibOut = vibranceFilter.outputImage else { return image }
+        // 3) Optional: small Gaussian blur to further blend blockiness
+        if medianRadius > 0.0 {
+            let gaussian = CIFilter.gaussianBlur()
+            gaussian.inputImage = current
+            gaussian.radius = medianRadius
+            if let out = gaussian.outputImage { current = out }
+        }
 
-        // 3) Noise reduction
+        // 4) Noise reduction (edge-preserving)
         let noiseFilter = CIFilter.noiseReduction()
-        noiseFilter.inputImage = vibOut
-        noiseFilter.noiseLevel = noise
-        noiseFilter.sharpness = 0.4
-        guard let noiseOut = noiseFilter.outputImage else { return image }
+        noiseFilter.inputImage = current
+        noiseFilter.noiseLevel = noiseLevel
+        noiseFilter.sharpness = noiseSharpness
+        if let out = noiseFilter.outputImage { current = out }
 
-        // 4) Sharpen
-        let sharpenFilter = CIFilter.sharpenLuminance()
-        sharpenFilter.inputImage = noiseOut
-        sharpenFilter.sharpness = sharpness
-        guard let sharpOut = sharpenFilter.outputImage else { return image }
+        // 5) Unsharp mask to bring back detail after smoothing
+        let unsharp = CIFilter.unsharpMask()
+        unsharp.inputImage = current
+        unsharp.radius = unsharpRadius
+        unsharp.intensity = unsharpIntensity
+        if let out = unsharp.outputImage { current = out }
 
-        // 5) Color controls
-        let colorControls = CIFilter.colorControls()
-        colorControls.inputImage = sharpOut
-        colorControls.contrast = contrast
-        colorControls.saturation = saturation
-        guard let finalOut = colorControls.outputImage else { return image }
+        // 6) Color tweaks to improve perceived quality
+        let exposure = CIFilter.exposureAdjust()
+        exposure.inputImage = current
+        exposure.ev = exposureEV
+        if let out = exposure.outputImage { current = out }
 
-        guard let outCG = context.createCGImage(finalOut, from: finalOut.extent) else { return image }
+        let vib = CIFilter.vibrance()
+        vib.inputImage = current
+        vib.amount = vibrance
+        if let out = vib.outputImage { current = out }
+
+        let color = CIFilter.colorControls()
+        color.inputImage = current
+        color.contrast = contrast
+        color.saturation = saturation
+        if let out = color.outputImage { current = out }
+
+        // 7) Optional gentle downscale to blend remaining jaggies
+        if finalDownscale > 0.0, finalDownscale < 1.0 {
+            let lanczosDown = CIFilter.lanczosScaleTransform()
+            lanczosDown.inputImage = current
+            lanczosDown.scale = Float(finalDownscale)
+            lanczosDown.aspectRatio = 1.0
+            if let out = lanczosDown.outputImage { current = out }
+        }
+
+        guard let outCG = context.createCGImage(current, from: current.extent) else { return image }
         return UIImage(cgImage: outCG, scale: image.scale, orientation: image.imageOrientation)
     }
 }
