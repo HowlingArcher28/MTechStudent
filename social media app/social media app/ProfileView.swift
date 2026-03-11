@@ -1,8 +1,16 @@
+/*
+ ProfileView.swift
+ 
+ Overview:
+ Displays basic user information from AuthModel when signed in and offers a
+ Sign Out action. Shows a simple placeholder when not authenticated.
+*/
+
 import SwiftUI
 
 struct ProfileView: View {
 
-    @EnvironmentObject var auth: AuthModel
+    @Environment(AuthModel.self) var auth: AuthModel
 
     var body: some View {
         VStack(spacing: 16) {
@@ -65,3 +73,4 @@ struct ProfileView: View {
         .navigationTitle("Profile")
     }
 }
+

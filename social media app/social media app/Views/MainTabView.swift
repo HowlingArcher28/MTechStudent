@@ -1,9 +1,17 @@
+/*
+ MainTabView.swift
+ 
+ Overview:
+ The primary tab container for the app. Hosts Today, Assignments, and Profile
+ tabs and reads shared models from the environment.
+*/
+
 import SwiftUI
 
 struct MainTabView: View {
 
-    @EnvironmentObject var auth: AuthModel
-    @EnvironmentObject var services: ServicesModel
+    @Environment(AuthModel.self) var auth: AuthModel
+    @Environment(ServicesModel.self) var services: ServicesModel
 
     var body: some View {
         TabView {
@@ -11,19 +19,17 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Today", systemImage: "calendar")
                 }
-                .environmentObject(services)
 
             CalendarListView(cohort: "fall2025")
                 .tabItem {
                     Label("Assignments", systemImage: "list.bullet")
                 }
-                .environmentObject(services)
 
             ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.circle")
                 }
-                .environmentObject(auth)
         }
     }
 }
+

@@ -1,12 +1,28 @@
+/*
+ Models.swift
+ 
+ Overview:
+ Core DTO models used by the networking layer and views. These types mirror
+ backend API payloads for sign-in, user profiles, posts, comments, and generic
+ API errors, and are Codable for straightforward JSON encoding/decoding.
+ 
+ Contents:
+ - SignInResponseDTO: Auth response containing user identity and secret token.
+ - UserProfileDTO: Public profile information and optional posts.
+ - PostDTO / CommentDTO: Basic social content types with metadata.
+ - APIErrorDTO: A simple error type surfaced when API calls fail.
+*/
+
 import Foundation
 
+// This is what the server sends back when you log in (includes your secret)
 struct SignInResponseDTO: Codable {
-    let firstName: String
-    let lastName: String
-    let email: String
-    let userUUID: String
-    let secret: String
-    let userName: String
+    let firstName: String // User's first name
+    let lastName: String // User's last name
+    let email: String // Email used to sign in
+    let userUUID: String // Unique ID for the user
+    let secret: String // IMPORTANT: Token we use to call protected endpoints
+    let userName: String // Public username
 }
 
 struct UserProfileDTO: Codable {
@@ -40,6 +56,8 @@ struct CommentDTO: Codable {
     let createdDate: String
 }
 
+// When something goes wrong, the server may send back this shape
 struct APIErrorDTO: Codable, Error {
-    let message: String
+    let message: String // Human-friendly error message to show in the UI
 }
+

@@ -1,3 +1,11 @@
+/*
+ String+Identifiable.swift
+ 
+ Overview:
+ A tiny utility type that wraps a String to conform to Identifiable. Useful for
+ driving SwiftUI lists or alerts where an identifiable string is required.
+*/
+
 //
 //  String+Identifiable.swift
 //  social media app
@@ -11,3 +19,4 @@ struct IdentifiableString: Identifiable {
     let value: String
     var id: String { value }
 }
+

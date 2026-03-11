@@ -1,3 +1,12 @@
+/*
+ AppTheme.swift
+ 
+ Overview:
+ Centralized theme constants and a view modifier that applies the app's
+ preferred colors, fonts, and tint across SwiftUI views. Provides a convenient
+ `.appTheme()` extension for consistent styling.
+*/
+
 import SwiftUI
 
 struct AppTheme {
@@ -32,3 +41,4 @@ extension View {
         modifier(AppThemeModifier())
     }
 }
+

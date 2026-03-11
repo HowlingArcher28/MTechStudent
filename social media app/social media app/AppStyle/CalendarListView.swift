@@ -1,8 +1,17 @@
+/*
+ CalendarListView.swift
+ 
+ Overview:
+ A SwiftUI screen that lists assignments in a scrollable view. It loads data
+ from ServicesModel, renders each item with AssignmentCard, and presents errors
+ via a SwiftUI alert.
+*/
+
 import SwiftUI
 
 struct CalendarListView: View {
 
-    @EnvironmentObject var services: ServicesModel
+    @Environment(ServicesModel.self) var services: ServicesModel
     let cohort: String
 
     var body: some View {
@@ -30,7 +39,7 @@ struct CalendarListView: View {
                     await services.loadAll(cohort: cohort)
                 }
             }
-            .alert(item: $services.alertMessage) { alert in
+            .alert(item: Binding(get: { services.alertMessage }, set: { services.alertMessage = $0 })) { alert in
                 Alert(title: Text("Error"), message: Text(alert.message), dismissButton: .default(Text("OK")))
             }
             .navigationTitle("Assignments")
@@ -116,3 +125,4 @@ struct AssignmentCard: View {
         .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 4)
     }
 }
+

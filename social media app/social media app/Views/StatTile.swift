@@ -1,3 +1,11 @@
+/*
+ StatTile.swift
+ 
+ Overview:
+ A small, reusable SwiftUI component that displays a statistic tile with an
+ optional emoji, a prominent value, and a caption title. Used in dashboard
+ contexts like TodayView for quick at-a-glance metrics.
+*/
 //
 //  StatTile.swift
 //  social media app
@@ -30,3 +38,4 @@ struct StatTile: View {
         .shadow(color: .black.opacity(0.06), radius: 10, x: 0, y: 6)
     }
 }
+

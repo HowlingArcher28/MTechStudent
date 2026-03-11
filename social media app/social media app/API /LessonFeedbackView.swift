@@ -1,6 +1,11 @@
-//
-//  LessonFeedbackView.swift
-//
+/*
+ LessonFeedbackView.swift
+ 
+ Overview:
+ A simple view that collects freeform feedback for a specific lesson. Submits
+ feedback asynchronously and surfaces validation or submission errors via an
+ alert bound to local state.
+*/
 
 import SwiftUI
 
@@ -9,7 +14,7 @@ struct LessonFeedbackView: View {
     @State private var feedback: String = ""
     @State private var alertMessage: LessonFeedbackAlert?
 
-    @EnvironmentObject var auth: AuthModel
+    @Environment(AuthModel.self) var auth: AuthModel
 
     var body: some View {
         NavigationStack {
@@ -63,3 +68,4 @@ struct LessonFeedbackAlert: Identifiable {
     let id = UUID()
     let message: String
 }
+

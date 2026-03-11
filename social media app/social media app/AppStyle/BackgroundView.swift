@@ -1,3 +1,12 @@
+/*
+ BackgroundView.swift
+ 
+ Overview:
+ A decorative SwiftUI background with a slow-rotating angular gradient overlaid
+ by procedural noise for subtle texture. Used as a backdrop behind content to
+ provide a playful, branded look.
+*/
+
 import SwiftUI
 
 struct BackgroundView: View {

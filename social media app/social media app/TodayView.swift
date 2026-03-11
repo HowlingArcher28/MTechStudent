@@ -1,8 +1,24 @@
+/*
+ TodayView.swift
+ 
+ Overview:
+ A SwiftUI dashboard for "Today" that shows a header with the current date,
+ summary of things like statistics for assignments (total, due soon, overdue), and a list of
+ assignments due today. loads data from the shared ServicesModel and presents
+ errors from a SwiftUI alert. Also a background view that provides the app's themed styling.
+ 
+ Responsibilities:
+ - Trigger a lightweight load of all assignments when data is empty.
+ - Compute today/due-soon/overdue counts from assignment due dates.
+ - Render cards and tiles for a friendly, glanceable overview.
+ - Surface errors from ServicesModel.alertMessage.
+*/
 import SwiftUI
 
 struct TodayView: View {
 
-    @EnvironmentObject var services: ServicesModel
+    // gets the shared services so we can read assignments and errors
+    @Environment(ServicesModel.self) var services: ServicesModel
     let cohort: String
 
     var body: some View {
@@ -22,14 +38,14 @@ struct TodayView: View {
                     }
                     .task {
                         await services.loadAll(cohort: cohort)
-                    }
+                    } // starts loading when the view appears
                 } else {
                     ScrollView {
                         VStack(spacing: 20) {
                             // Header Card
                             TodayHeaderCard()
                             
-                            // Stats Row
+                            // Show quick stats so users can see what's coming up
                             HStack(spacing: 12) {
                                 StatTile(
                                     title: "Total",
@@ -72,9 +88,16 @@ struct TodayView: View {
                     }
                 }
             }
-            .alert(item: $services.alertMessage) { alert in
-                Alert(title: Text("Error"), message: Text(alert.message), dismissButton: .default(Text("OK")))
-            }
+            .alert("Error", isPresented: Binding(
+                get: { services.alertMessage != nil },
+                set: { if !$0 { services.alertMessage = nil } }
+            )) {
+                Button("OK", role: .cancel) {
+                    services.alertMessage = nil
+                }
+            } message: {
+                Text(services.alertMessage?.message ?? "")
+            } // Present an alert whenever ServicesModel has an alert message
             .navigationTitle("Today")
         }
         .appTheme()
@@ -82,6 +105,7 @@ struct TodayView: View {
     
     // MARK: - Computed Properties
     private var todayAssignments: [AssignmentResponseDTO] {
+        // Figure out which assignments have a due date that is 'today'
         let calendar = Calendar.current
         return services.allAssignments.filter { assignment in
             guard let dueOn = assignment.dueOn,
@@ -91,6 +115,7 @@ struct TodayView: View {
     }
     
     private var dueSoonCount: Int {
+        // We count anything due in the next 3 days as 'soon'
         let calendar = Calendar.current
         let threeDaysFromNow = calendar.date(byAdding: .day, value: 3, to: Date()) ?? Date()
         return services.allAssignments.filter { assignment in
@@ -101,6 +126,7 @@ struct TodayView: View {
     }
     
     private var overdueCount: Int {
+        // Anything with a due date in the past is overdue
         services.allAssignments.filter { assignment in
             guard let dueOn = assignment.dueOn,
                   let date = ISO8601DateFormatter().date(from: dueOn) else { return false }
@@ -162,3 +188,4 @@ struct EmptyStateCard: View {
         )
     }
 }
+

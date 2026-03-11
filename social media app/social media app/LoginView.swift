@@ -1,8 +1,18 @@
+/*
+ LoginView.swift
+ 
+ Overview:
+ A basic login screen with email and password fields that calls AuthModel.signIn
+ using async/await. Displays loading state and any error messages.
+*/
+
 import SwiftUI
 
 struct LoginView: View {
 
-    @EnvironmentObject var auth: AuthModel
+    // Read the auth model so we can call sign in and show errors
+    @Environment(AuthModel.self) var auth: AuthModel
+    // Local text field state
     @State private var email = ""
     @State private var password = ""
 
@@ -18,7 +28,7 @@ struct LoginView: View {
                 
                 Spacer()
                 
-                // Error Message
+                // If the server sent an error (like bad password), show it here
                 if let error = auth.errorMessage {
                     Text(error)
                         .foregroundColor(.white)
@@ -54,7 +64,7 @@ struct LoginView: View {
                 
                 // Sign In Button
                 Button(action: {
-                    Task {
+                    Task { // Call sign in using async/await
                         await auth.signIn(email: email, password: password)
                     }
                 }) {
@@ -72,7 +82,7 @@ struct LoginView: View {
                 .background(Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(8)
-                .disabled(auth.isLoading || email.isEmpty || password.isEmpty)
+                .disabled(auth.isLoading || email.isEmpty || password.isEmpty) // Don't let them tap while loading or with empty fields
                 .opacity((email.isEmpty || password.isEmpty) ? 0.6 : 1.0)
                 
                 Spacer()
@@ -82,3 +92,4 @@ struct LoginView: View {
         }
     }
 }
+

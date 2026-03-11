@@ -1,3 +1,17 @@
+/*
+ ProfileEditView.swift
+ 
+ Overview:
+ A SwiftUI form that allows the user to edit their profile details, including
+ name, username, and bio. Edits are staged in local `draft` state and committed
+ back to `AppModel.profile` on save.
+ 
+ Responsibilities:
+ - Provide text fields for first name, last name, and username.
+ - Enforce a character limit on the bio using TextEditor.
+ - Save or cancel changes using navigation bar toolbar actions.
+*/
+
 //
 //  ProfileEditView.swift
 //  social media app

@@ -1,10 +1,19 @@
+/*
+ AssignmentsView.swift
+ 
+ Overview:
+ A straightforward list view that loads all assignments from ServicesModel and
+ displays them with minimal styling. Shows a ProgressView while loading and an
+ alert on error.
+*/
+
 import SwiftUI
 import Foundation
 
 
 struct AssignmentsView: View {
 
-    @EnvironmentObject var services: ServicesModel
+    @Environment(ServicesModel.self) var services: ServicesModel
     let cohort: String
 
     @State private var assignments: [AssignmentResponseDTO] = []

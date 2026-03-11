@@ -17,17 +17,17 @@ final class ImageEnhancer {
     ///   - finalDownscale: Optional final scale to slightly reduce size and blend artifacts (e.g., 0.75-0.9).
     ///   - exposureEV, vibrance, contrast, saturation: Color tweaks for perceived quality.
     func enhance(_ image: UIImage,
-                 upscaleFactor: CGFloat = 3.0,
+                 upscaleFactor: CGFloat = 4.0,
                  medianRadius: Float = 1.0,
-                 noiseLevel: Float = 0.25,
-                 noiseSharpness: Float = 0.5,
-                 unsharpRadius: Float = 2.0,
-                 unsharpIntensity: Float = 0.6,
-                 finalDownscale: CGFloat = 0.85,
-                 exposureEV: Float = 0.2,
-                 vibrance: Float = 0.9,
-                 contrast: Float = 1.12,
-                 saturation: Float = 1.1) -> UIImage {
+                 noiseLevel: Float = 0.02,
+                 noiseSharpness: Float = 0.35,
+                 unsharpRadius: Float = 1.2,
+                 unsharpIntensity: Float = 1.1,
+                 finalDownscale: CGFloat = 0.92,
+                 exposureEV: Float = 0.35,
+                 vibrance: Float = 0.25,
+                 contrast: Float = 1.08,
+                 saturation: Float = 1.05) -> UIImage {
 
         guard let cgImage = image.cgImage else { return image }
         var current = CIImage(cgImage: cgImage)

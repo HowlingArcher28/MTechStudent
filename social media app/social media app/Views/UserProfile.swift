@@ -1,3 +1,10 @@
+/*
+ UserProfile.swift
+ 
+ Overview:
+ A simple, codable model representing the local user's profile used by the app.
+ Includes display name fields, username, bio, and optional image references.
+*/
 //
 //  UserProfile.swift
 //  social media app
@@ -16,3 +23,4 @@ struct UserProfile: Equatable, Codable {
     var profileImageName: String?
     var coverImageName: String?
 }
+

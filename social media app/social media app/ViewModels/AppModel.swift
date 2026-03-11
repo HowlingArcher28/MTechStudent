@@ -1,3 +1,16 @@
+/*
+ AppModel.swift
+ 
+ Overview:
+ The main observable application model that owns user-centric state and
+ persistence. Manages the current user profile and a legacy `currentUser`
+ string used by other parts of the app, and persists state to disk.
+ 
+ Responsibilities:
+ - Load/save app state via AppPersistence.
+ - Expose and update the current UserProfile.
+ - Keep `currentUser` synchronized with the profile's username.
+*/
 //
 //  AppModel.swift
 //  social media app
@@ -98,3 +111,4 @@ final class AppModel {
         persistence.save(state)
     }
 }
+

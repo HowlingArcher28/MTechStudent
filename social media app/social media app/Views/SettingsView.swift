@@ -1,4 +1,11 @@
-// SettingsView.swift
+/*
+ SettingsView.swift
+ 
+ Overview:
+ A simple settings screen. Currently displays the selected cohort for calendar
+ data and can be expanded with additional configuration options.
+*/
+
 import SwiftUI
 
 struct SettingsView: View {

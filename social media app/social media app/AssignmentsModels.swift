@@ -1,3 +1,16 @@
+/*
+ AssignmentsModels.swift
+ 
+ Overview:
+ Data transfer object (DTO) models representing assignments and FAQs as returned
+ by the backend API. These types are Codable for easy encoding/decoding and
+ Identifiable for convenient SwiftUI usage.
+ 
+ Contents:
+ - AssignmentResponseDTO: The core assignment payload including metadata and FAQs.
+ - FAQResponseDTO: Frequently asked questions associated with an assignment or lesson.
+*/
+
 import Foundation
 
 struct AssignmentResponseDTO: Codable, Identifiable {

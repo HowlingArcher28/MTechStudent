@@ -1,3 +1,11 @@
+/*
+ CalendarModels.swift
+ 
+ Overview:
+ DTO models for calendar-related API responses. Represents daily entries that
+ may include lesson metadata and assignment groupings used by calendar views.
+*/
+
 import Foundation
 
 struct CalendarEntryResponseDTO: Codable, Identifiable {
@@ -14,3 +22,4 @@ struct CalendarEntryResponseDTO: Codable, Identifiable {
     let dailyCodeChallengeName: String?
     let wordOfTheDay: String?
 }
+

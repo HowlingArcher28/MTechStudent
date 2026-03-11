@@ -1,3 +1,12 @@
+/*
+ PersistenceControlsView.swift
+ 
+ Overview:
+ A small settings section offering explicit Save and Clear actions for the app's
+ persisted state. Demonstrates local JSON save/clear operations and presents
+ errors with alerts and confirmation dialogs.
+*/
+
 import SwiftUI
 
 struct PersistenceControlsView: View {
