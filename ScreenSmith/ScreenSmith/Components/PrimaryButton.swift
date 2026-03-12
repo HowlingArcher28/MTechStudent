@@ -12,21 +12,24 @@ struct PrimaryButton: View {
     let title: String
 
     var body: some View {
-
         Text(title)
-            .font(.headline)
+            .font(.headline.weight(.semibold))
+            .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
-            .padding()
+            .padding(.vertical, 14)
             .background(
-                LinearGradient(
-                    colors: [
-                        Color.blue,
-                        Color.blue.opacity(0.6)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(NeonColors.neonBlue.opacity(0.16))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(LinearGradient(colors: [NeonColors.neonBlue.opacity(0.9), NeonColors.neonBlue.opacity(0.3)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
+                    )
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(NeonColors.neonBlue.opacity(0.06))
+                            .blur(radius: 20)
+                    )
             )
-            .cornerRadius(16)
+            .neonGlow(color: NeonColors.neonBlue, radius: 16, intensity: 0.7)
     }
 }

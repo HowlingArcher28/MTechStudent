@@ -111,20 +111,20 @@ public struct NeonCard<Content: View>: View {
     }
 
     public var body: some View {
-        RoundedRectangle(cornerRadius: 20, style: .continuous)
-            .fill(Color.white.opacity(0.02))
+        content
+            .padding(16)
             .background(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(color.opacity(0.06))
-                    .blur(radius: 30)
+                    .fill(Color.white.opacity(0.02))
+                    .background(
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .fill(color.opacity(0.06))
+                            .blur(radius: 30)
+                    )
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
                     .stroke(LinearGradient(colors: [color.opacity(0.8), color.opacity(0.2)], startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
-            )
-            .overlay(
-                content
-                    .padding(16)
             )
             .neonGlow(color: color, radius: 18, intensity: 0.5)
     }

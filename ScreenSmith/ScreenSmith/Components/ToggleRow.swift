@@ -22,17 +22,18 @@ struct ToggleRow: View {
 
                 Text(title)
                     .font(.headline)
+                    .foregroundStyle(.white.opacity(0.9))
 
                 Text(subtitle)
                     .font(.caption)
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.white.opacity(0.6))
 
             }
 
             Spacer()
 
             Toggle("", isOn: $isOn)
-                .tint(.blue)
+                .tint(NeonColors.neonBlue)
 
         }
     }

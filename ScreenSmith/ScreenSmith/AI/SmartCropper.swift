@@ -3,8 +3,20 @@ import CoreImage
 import UIKit
 
 struct SmartCropper {
+    private func normalizedCGImage(from image: UIImage) -> CGImage? {
+        // Render the UIImage into a context to remove orientation metadata
+        let size = image.size
+        let format = UIGraphicsImageRendererFormat.default()
+        format.scale = image.scale
+        let renderer = UIGraphicsImageRenderer(size: size, format: format)
+        let rendered = renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: size))
+        }
+        return rendered.cgImage
+    }
+
     func crop(image: UIImage, targetAspect: CGFloat) -> UIImage {
-        guard let cgImage = image.cgImage else { return image }
+        guard let cgImage = normalizedCGImage(from: image) else { return image }
 
         // Step 1: Detect faces or salient regions
         let request = VNDetectFaceRectanglesRequest()

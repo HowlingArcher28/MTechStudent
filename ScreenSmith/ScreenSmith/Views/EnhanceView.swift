@@ -1,11 +1,16 @@
 import SwiftUI
+import UIKit
 
 struct EnhanceView: View {
-    @State private var smartCrop = true
-    @State private var autoEnhance = true
+    let image: UIImage
+    @EnvironmentObject var pipeline: ImagePipeline
+    @EnvironmentObject var navigationManager: NavigationManager
     @State private var sharpness: Double = 0.75
     @State private var vibrance: Double = 0.30
-    @State private var blurBackground = true
+
+    @State private var enhancedImage: UIImage?
+    @State private var splitPosition: CGFloat = 0.5 // 0...1 for before/after slider
+    @State private var showPreviewHint: Bool = true
 
     var body: some View {
         ZStack {
@@ -15,7 +20,6 @@ struct EnhanceView: View {
                 VStack(spacing: 20) {
                     header
                     previewCard
-                    optionsCard
                     adjustmentsCard
                     ctaButton
                 }
@@ -51,70 +55,141 @@ struct EnhanceView: View {
     var previewCard: some View {
         NeonCard(color: NeonColors.neonBlue) {
             VStack(spacing: 16) {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.white.opacity(0.03))
-                    .overlay(
+                GeometryReader { geo in
+                    let width = geo.size.width
+                    let height = geo.size.height
+                    ZStack {
+                        // After (enhanced) image in the back
+                        if let enhanced = enhancedImage {
+                            Image(uiImage: enhanced)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: width, height: height)
+                                .clipped()
+                        } else {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: width, height: height)
+                                .clipped()
+                        }
+
+                        // Before image masked to the split position (left side)
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: width, height: height)
+                            .clipped()
+                            .mask(
+                                HStack(spacing: 0) {
+                                    Rectangle().frame(width: max(0, min(width, width * splitPosition)), height: height)
+                                    Spacer(minLength: 0)
+                                }
+                            )
+
+                        // Divider line
+                        Rectangle()
+                            .fill(Color.white.opacity(0.9))
+                            .frame(width: 2)
+                            .position(x: max(0, min(width, width * splitPosition)), y: height / 2)
+                            .shadow(color: .black.opacity(0.4), radius: 2)
+
+                        // Drag handle
                         ZStack {
-                            Image(systemName: "photo")
-                                .font(.system(size: 40, weight: .bold))
-                                .foregroundStyle(.white)
-                                .neonGlow(color: NeonColors.neonBlue, radius: 18, intensity: 0.6)
-                            VStack {
-                                Spacer()
-                                Text("Drag & drop or tap to select a photo")
-                                    .font(.footnote)
-                                    .foregroundStyle(.white.opacity(0.7))
-                                    .padding(.bottom, 10)
+                            Circle()
+                                .fill(Color.white.opacity(0.9))
+                                .frame(width: 28, height: 28)
+                                .shadow(color: .black.opacity(0.3), radius: 3)
+                            HStack(spacing: 4) {
+                                Image(systemName: "chevron.left")
+                                Image(systemName: "chevron.right")
+                            }
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(.black.opacity(0.8))
+                        }
+                        .position(x: max(14, min(width - 14, width * splitPosition)), y: height / 2)
+
+                        // Before/After labels
+                        HStack {
+                            Text("Before")
+                                .font(.footnote.weight(.semibold))
+                                .foregroundStyle(.white.opacity(0.85))
+                                .padding(6)
+                                .background(Color.black.opacity(0.25))
+                                .clipShape(Capsule())
+                                .padding([.leading, .top], 10)
+                            Spacer()
+                            if enhancedImage != nil {
+                                Text("After")
+                                    .font(.footnote.weight(.semibold))
+                                    .foregroundStyle(.white.opacity(0.85))
+                                    .padding(6)
+                                    .background(Color.black.opacity(0.25))
+                                    .clipShape(Capsule())
+                                    .padding([.trailing, .top], 10)
                             }
                         }
-                    )
-                    .frame(height: 200)
-                    .neonGlow(color: NeonColors.neonBlue, radius: 16, intensity: 0.35)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
 
-                HStack(spacing: 12) {
+                        if showPreviewHint {
+                            VStack {
+                                Text("Drag to compare")
+                                    .font(.footnote.weight(.semibold))
+                                    .foregroundStyle(.white.opacity(0.9))
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 6)
+                                    .background(Color.black.opacity(0.35))
+                                    .clipShape(Capsule())
+                                    .padding(.bottom, 12)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                            .transition(.opacity)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                    .gesture(
+                        DragGesture(minimumDistance: 0)
+                            .onChanged { value in
+                                let x = value.location.x / max(1, width)
+                                splitPosition = max(0, min(1, x))
+                                withAnimation(.easeOut(duration: 0.2)) { showPreviewHint = false }
+                            }
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                }
+                .frame(height: 480)
+
+                VStack(spacing: 8) {
+                    ProgressView(value: pipeline.progress)
+                        .tint(NeonColors.neonBlue)
+                        .opacity(pipeline.isProcessing ? 1 : 0)
                     Button {
-                        // Import from Photos
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        withAnimation(.easeOut(duration: 0.2)) { showPreviewHint = false }
+                        Task {
+                            let result = await pipeline.enhance(image, sharpness: sharpness, vibrance: vibrance, autoEnhance: true)
+                            enhancedImage = result
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+                                splitPosition = 0.75
+                            }
+                            UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        }
                     } label: {
-                        Label("Photos", systemImage: "photo.on.rectangle")
+                        if pipeline.isProcessing {
+                            HStack(spacing: 8) {
+                                ProgressView()
+                                Text("Upscaling…")
+                            }
+                        } else {
+                            HStack(spacing: 8) {
+                                Image(systemName: "wand.and.stars")
+                                Text("AI Upscaling")
+                            }
+                        }
                     }
                     .buttonStyle(NeonButtonStyle(color: NeonColors.neonBlue))
-
-                    Button {
-                        // Import from Files
-                    } label: {
-                        Label("Files", systemImage: "folder")
-                    }
-                    .buttonStyle(NeonButtonStyle(color: NeonColors.neonPurple))
+                    .disabled(pipeline.isProcessing)
                 }
-            }
-        }
-    }
-
-    // MARK: - Options
-    var optionsCard: some View {
-        NeonCard(color: NeonColors.neonPurple) {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Options")
-                    .foregroundStyle(.white.opacity(0.9))
-                    .font(.headline)
-
-                Toggle(isOn: $smartCrop) {
-                    Text("Smart Crop")
-                        .foregroundStyle(.white.opacity(0.9))
-                }
-                .tint(NeonColors.neonBlue)
-
-                Toggle(isOn: $autoEnhance) {
-                    Text("Auto Enhance")
-                        .foregroundStyle(.white.opacity(0.9))
-                }
-                .tint(NeonColors.neonGreen)
-
-                Toggle(isOn: $blurBackground) {
-                    Text("Blur Background")
-                        .foregroundStyle(.white.opacity(0.9))
-                }
-                .tint(NeonColors.neonCyan)
             }
         }
     }
@@ -128,26 +203,25 @@ struct EnhanceView: View {
                     .font(.headline)
 
                 VStack(spacing: 14) {
-                    NeonSlider(color: NeonColors.neonBlue, value: sharpness) {
-                        HStack {
-                            Text("Sharpness")
-                            Spacer()
-                            Text("\(Int(sharpness * 100))")
-                        }
+                    HStack {
+                        Text("Sharpness")
+                        Spacer()
+                        Text("\(Int(sharpness * 100))")
                     }
                     Slider(value: $sharpness, in: 0...1)
                         .tint(NeonColors.neonBlue)
 
-                    NeonSlider(color: NeonColors.neonPurple, value: vibrance) {
-                        HStack {
-                            Text("Vibrance")
-                            Spacer()
-                            Text("\(Int(vibrance * 100))")
-                        }
+                    HStack {
+                        Text("Vibrance")
+                        Spacer()
+                        Text("\(Int(vibrance * 100))")
                     }
                     Slider(value: $vibrance, in: 0...1)
                         .tint(NeonColors.neonPurple)
                 }
+                Text("Tip: Adjust sliders, then tap AI Upscaling to re-enhance.")
+                    .font(.footnote)
+                    .foregroundStyle(.white.opacity(0.6))
             }
         }
     }
@@ -155,11 +229,12 @@ struct EnhanceView: View {
     // MARK: - CTA
     var ctaButton: some View {
         Button {
-            // Run enhancement / save result
+            let next = enhancedImage ?? image
+            navigationManager.goToPerfectFit(image: next)
         } label: {
             HStack {
                 Spacer()
-                Text("Save to Gallery")
+                Text("Continue to Image Cropping")
                 Spacer()
             }
         }
@@ -168,5 +243,8 @@ struct EnhanceView: View {
 }
 
 #Preview {
-    NavigationStack { EnhanceView(image: <#UIImage#>) }
+    NavigationStack { EnhanceView(image: UIImage(systemName: "photo")!) }
+        .environmentObject(ImagePipeline())
+        .environmentObject(NavigationManager())
 }
+
