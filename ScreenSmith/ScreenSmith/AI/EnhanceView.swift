@@ -168,5 +168,5 @@ struct EnhanceView: View {
 }
 
 #Preview {
-    NavigationStack { EnhanceView(image: <#UIImage#>) }
+    NavigationStack { EnhanceView() }
 }
